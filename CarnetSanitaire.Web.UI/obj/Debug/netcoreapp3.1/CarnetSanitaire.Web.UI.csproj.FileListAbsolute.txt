@@ -189,3 +189,10 @@ D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Error.cshtml.g.cs
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\MailKit.dll
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\MimeKit.dll
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\NETCore.MailKit.dll
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\BouncyCastle.Crypto.dll
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.csproj.CoreCompileInputs.cache
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.MvcApplicationPartsAssemblyInfo.cs
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.MvcApplicationPartsAssemblyInfo.cache
