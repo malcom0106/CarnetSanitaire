@@ -53,7 +53,6 @@ D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.csprojAssemblyReference.cache
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.csproj.CoreCompileInputs.cache
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.MvcApplicationPartsAssemblyInfo.cs
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.MvcApplicationPartsAssemblyInfo.cache
