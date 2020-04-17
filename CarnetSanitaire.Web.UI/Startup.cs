@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using CarnetSanitaire.Web.UI.Models;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace CarnetSanitaire.Web.UI
 {

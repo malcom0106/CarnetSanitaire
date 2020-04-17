@@ -9,8 +9,8 @@ namespace CarnetSanitaire.Web.UI.Models
     public class ApplicationUser : IdentityUser
     {
         // Ajout de propriete au UserIdentity par default
-        public string prenom { get; set; }
-        public string matricule { get; set; }
+        public string Prenom { get; set; }
+        public string Matricule { get; set; }
         public Etablissement Etablissement { get; set; }
 
         //Ajouter toutes les propriétés de navigation de l’utilisateur
