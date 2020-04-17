@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using MimeKit;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CarnetSanitaire.Web.UI.Services
 {
+    [NotMapped]
     public class EmailSender : IEmailSender
     {       
 
@@ -23,6 +25,10 @@ namespace CarnetSanitaire.Web.UI.Services
             SmtpPort = smtpPort;
             SmtpIdentifiant = smtpIdentifiant;
             SmtpMotDePasse = smtpMotDePasse;
+        }
+
+        public EmailSender()
+        {
         }
 
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
