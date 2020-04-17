@@ -12,6 +12,9 @@ using CarnetSanitaire.Web.UI.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using CarnetSanitaire.Web.UI.Models;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using CarnetSanitaire.Web.UI.Services;
 
 namespace CarnetSanitaire.Web.UI
 {
@@ -28,10 +31,20 @@ namespace CarnetSanitaire.Web.UI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //Injection de dependance 
+            //services.AddTransient<Data.ApplicationDbContext>();
+            services.AddTransient<IEmailSender, EmailSender>();            
+
+            //Accéder à une clé secrète            
+            var SmtpConfig = Configuration.GetSection("emailauthentification").Get<EmailSender>();
+            
+            
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
