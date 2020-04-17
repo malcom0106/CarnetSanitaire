@@ -12,6 +12,7 @@ using CarnetSanitaire.Web.UI.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using CarnetSanitaire.Web.UI.Models;
 
 namespace CarnetSanitaire.Web.UI
 {
@@ -30,7 +31,7 @@ namespace CarnetSanitaire.Web.UI
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             //Injection de dependance 

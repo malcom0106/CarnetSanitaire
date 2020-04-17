@@ -81,3 +81,4 @@ D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.dll
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.pdb
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.genruntimeconfig.cache
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.csprojAssemblyReference.cache

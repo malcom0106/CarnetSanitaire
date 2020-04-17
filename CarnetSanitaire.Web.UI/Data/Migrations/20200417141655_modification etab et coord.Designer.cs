@@ -4,22 +4,81 @@ using CarnetSanitaire.Web.UI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarnetSanitaire.Web.UI.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200417141655_modification etab et coord")]
+    partial class modificationetabetcoord
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ApplicationRole", b =>
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Coordonnee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Adresse")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CodePostal")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EtablissementId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Fax")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubAdresse")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telephone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Ville")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EtablissementId")
+                        .IsUnique();
+
+                    b.ToTable("Coordonnees");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Etablissement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Capacite")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Nom")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Etablissements");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -46,7 +105,7 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ApplicationRoleClaim", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,7 +129,7 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                     b.ToTable("AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -88,9 +147,6 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("EtablissementId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -125,15 +181,7 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<string>("matricule")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("prenom")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("EtablissementId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -146,7 +194,7 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ApplicationUserClaim", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -170,7 +218,7 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                     b.ToTable("AspNetUserClaims");
                 });
 
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ApplicationUserLogin", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(128)")
@@ -194,7 +242,7 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ApplicationUserRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -209,7 +257,7 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ApplicationUserToken", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -232,174 +280,62 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
 
             modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Coordonnee", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Adresse")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CodePostal")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Fax")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SubAdresse")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telephone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ville")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Coordonnees");
-                });
-
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Etablissement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Capacite")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CoordonneeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Nom")
-                        .HasColumnType("int")
-                        .HasMaxLength(50);
-
-                    b.Property<int?>("PersonnelId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CoordonneeId");
-
-                    b.HasIndex("PersonnelId");
-
-                    b.ToTable("Etablissements");
-                });
-
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Personnel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("EtablissementId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nom")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Prenom")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EtablissementId");
-
-                    b.ToTable("Personnels");
-                });
-
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ApplicationRoleClaim", b =>
-                {
-                    b.HasOne("CarnetSanitaire.Web.UI.Models.ApplicationRole", "Role")
-                        .WithMany("RoleClaims")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("CarnetSanitaire.Web.UI.Models.Etablissement", "Etablissement")
-                        .WithMany()
-                        .HasForeignKey("EtablissementId");
-                });
-
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ApplicationUserClaim", b =>
-                {
-                    b.HasOne("CarnetSanitaire.Web.UI.Models.ApplicationUser", "User")
-                        .WithMany("Claims")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ApplicationUserLogin", b =>
-                {
-                    b.HasOne("CarnetSanitaire.Web.UI.Models.ApplicationUser", "User")
-                        .WithMany("Logins")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ApplicationUserRole", b =>
-                {
-                    b.HasOne("CarnetSanitaire.Web.UI.Models.ApplicationRole", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CarnetSanitaire.Web.UI.Models.ApplicationUser", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ApplicationUserToken", b =>
-                {
-                    b.HasOne("CarnetSanitaire.Web.UI.Models.ApplicationUser", "User")
-                        .WithMany("Tokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Etablissement", b =>
-                {
-                    b.HasOne("CarnetSanitaire.Web.UI.Models.Coordonnee", "Coordonnee")
-                        .WithMany()
-                        .HasForeignKey("CoordonneeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CarnetSanitaire.Web.UI.Models.Personnel", null)
-                        .WithMany("Etablissements")
-                        .HasForeignKey("PersonnelId");
-                });
-
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Personnel", b =>
-                {
                     b.HasOne("CarnetSanitaire.Web.UI.Models.Etablissement", null)
-                        .WithMany("Personnels")
-                        .HasForeignKey("EtablissementId");
+                        .WithOne("Coordonnee")
+                        .HasForeignKey("CarnetSanitaire.Web.UI.Models.Coordonnee", "EtablissementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
