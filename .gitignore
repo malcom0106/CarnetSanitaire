@@ -2,4 +2,4 @@
 *.log
 
 # ignore appsettings
-appsettings.json
+*.json
