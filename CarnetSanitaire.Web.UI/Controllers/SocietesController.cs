@@ -12,31 +12,29 @@ namespace CarnetSanitaire.Web.UI.Controllers
 {
     public class SocietesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly DataSociete _dalSociete;
 
-        public SocietesController(ApplicationDbContext context)
+        public SocietesController(DataSociete dalSociete)
         {
-            _context = context;
+            _dalSociete = dalSociete;
         }
 
         // GET: Societes
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var applicationDbContext = _context.Societes.Include(s => s.Coordonnee);
-            return View(await applicationDbContext.ToListAsync());
+            return View(_dalSociete.GetSocietes());
         }
 
         // GET: Societes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var societe = await _context.Societes
-                .Include(s => s.Coordonnee)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var societe = _dalSociete.GetSocieteById((int)id);
+
             if (societe == null)
             {
                 return NotFound();
