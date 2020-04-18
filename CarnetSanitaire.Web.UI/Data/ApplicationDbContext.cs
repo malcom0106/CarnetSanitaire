@@ -22,13 +22,13 @@ namespace CarnetSanitaire.Web.UI.Data
         public DbSet<Coordonnee> Coordonnees { get; set; }
         public DbSet<Etablissement> Etablissements { get; set; }
         public DbSet<Personnel> Personnels { get; set; }
+        public DbSet<Domaine> Domaines { get; set; }
+        public DbSet<Societe> Societes { get; set; }
 
         //Mise en place des relation N-N via le constructeur de model
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<Etablissement>().HasMany(etablissement => etablissement.Personnels);
-            builder.Entity<Personnel>().HasMany(personnel => personnel.Etablissements);
 
             //Ajouter toutes les propriétés de navigation de l’utilisateur
             builder.Entity<ApplicationUser>(b =>

@@ -24,7 +24,6 @@ namespace CarnetSanitaire.Web.UI.Models
         [ForeignKey("CoordonneeId")]
         public Coordonnee Coordonnee { get; set;  }
 
-        public virtual ICollection<Personnel> Personnels { get; set; }
-
+        public ICollection<Societe> Societes { get; set; }
     }
 }

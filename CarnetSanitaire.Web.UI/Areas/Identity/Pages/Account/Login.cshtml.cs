@@ -49,9 +49,10 @@ namespace CarnetSanitaire.Web.UI.Areas.Identity.Pages.Account
 
             [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "Mot de Passe")]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Se Rappeler de moi ?")]
             public bool RememberMe { get; set; }
         }
 
