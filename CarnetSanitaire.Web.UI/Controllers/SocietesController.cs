@@ -71,13 +71,13 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 return NotFound();
             }
 
-            ////var societe = await _context.Societes.FindAsync(id);
-            //if (societe == null)
-            //{
-            //    return NotFound();
-            //}
-            ////ViewData["CoordonneeId"] = new SelectList(_context.Coordonnees, "Id", "Adresse", societe.CoordonneeId);
-            return View();
+            Societe societe = await _dalSociete.GetSocieteById(id);
+            if (societe == null)
+            {
+                return NotFound();
+            }
+            
+            return View(societe);
         }
 
         // POST: Societes/Edit/5

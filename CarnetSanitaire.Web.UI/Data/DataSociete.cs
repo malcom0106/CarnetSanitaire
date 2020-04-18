@@ -61,6 +61,23 @@ namespace CarnetSanitaire.Web.UI.Data
 
             _context.Add(societe);
             await _context.SaveChangesAsync();
-        } 
+        }
+
+        public async Task<Societe> GetSocieteById(int? id)
+        {
+            Societe societe = null;
+            try
+            {
+
+                societe = await _context.Societes
+                    .Include(s => s.Coordonnee)
+                    .FirstOrDefaultAsync(s=>s.Id == id);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return societe;
+        }
     }
 }
