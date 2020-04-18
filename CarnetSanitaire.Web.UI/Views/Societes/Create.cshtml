@@ -1,4 +1,4 @@
-﻿@model CarnetSanitaire.Web.UI.Models.Societe
+﻿@model CarnetSanitaire.Web.UI.Models.SocieteModelView
 
 @{
     ViewData["Title"] = "Create";
@@ -18,8 +18,39 @@
                 <span asp-validation-for="Nom" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CoordonneeId" class="control-label"></label>
-                <select asp-for="CoordonneeId" class ="form-control" asp-items="ViewBag.CoordonneeId"></select>
+                <label asp-for="Adresse" class="control-label"></label>
+                <input asp-for="Adresse" type="text" class="form-control" />
+                <span asp-validation-for="Adresse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubAdresse" class="control-label"></label>
+                <input asp-for="SubAdresse" class="form-control" />
+                <span asp-validation-for="SubAdresse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CodePostal" class="control-label"></label>
+                <input asp-for="CodePostal" class="form-control" />
+                <span asp-validation-for="CodePostal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ville" class="control-label"></label>
+                <input asp-for="Ville" class="form-control" />
+                <span asp-validation-for="Ville" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Telephone" class="control-label"></label>
+                <input asp-for="Telephone" class="form-control" />
+                <span asp-validation-for="Telephone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fax" class="control-label"></label>
+                <input asp-for="Fax" class="form-control" />
+                <span asp-validation-for="Fax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

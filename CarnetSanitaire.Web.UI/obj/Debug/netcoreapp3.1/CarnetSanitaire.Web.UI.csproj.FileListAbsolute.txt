@@ -192,7 +192,6 @@ D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\MimeKit.dll
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\NETCore.MailKit.dll
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\BouncyCastle.Crypto.dll
-D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.csprojAssemblyReference.cache
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\Microsoft.Data.Sqlite.dll
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\Microsoft.DotNet.PlatformAbstractions.dll
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Sqlite.dll
@@ -216,3 +215,9 @@ D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\bin\Debug\netcoreapp3.1\
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.csproj.CoreCompileInputs.cache
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.MvcApplicationPartsAssemblyInfo.cs
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.MvcApplicationPartsAssemblyInfo.cache
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Societes\Create.cshtml.g.cs
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Societes\Delete.cshtml.g.cs
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Societes\Details.cshtml.g.cs
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Societes\Edit.cshtml.g.cs
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Societes\Index.cshtml.g.cs
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.csprojAssemblyReference.cache

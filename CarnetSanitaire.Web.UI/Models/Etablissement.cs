@@ -14,7 +14,7 @@ namespace CarnetSanitaire.Web.UI.Models
 
         [Required(ErrorMessage = "Le nom de l'établissement est requis")]
         [StringLength(50, MinimumLength =3)]
-        public int Nom { get; set; }
+        public string Nom { get; set; }
 
         [Range(1,1000)]
         public int Capacite { get; set; }

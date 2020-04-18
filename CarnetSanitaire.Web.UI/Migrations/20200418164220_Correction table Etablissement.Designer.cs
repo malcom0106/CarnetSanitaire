@@ -4,14 +4,16 @@ using CarnetSanitaire.Web.UI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarnetSanitaire.Web.UI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200418164220_Correction table Etablissement")]
+    partial class CorrectiontableEtablissement
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -351,7 +353,7 @@ namespace CarnetSanitaire.Web.UI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CoordonneeId")
+                    b.Property<int>("CoordonneeId")
                         .HasColumnType("int");
 
                     b.Property<int?>("EtablissementId")
@@ -457,7 +459,9 @@ namespace CarnetSanitaire.Web.UI.Migrations
                 {
                     b.HasOne("CarnetSanitaire.Web.UI.Models.Coordonnee", "Coordonnee")
                         .WithMany()
-                        .HasForeignKey("CoordonneeId");
+                        .HasForeignKey("CoordonneeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CarnetSanitaire.Web.UI.Models.Etablissement", null)
                         .WithMany("Societes")

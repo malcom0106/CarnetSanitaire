@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarnetSanitaire.Web.UI.Data;
 using CarnetSanitaire.Web.UI.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarnetSanitaire.Web.UI.Controllers
 {
+    [Authorize]
     public class SocietesController : Controller
     {
         private readonly DataSociete _dalSociete;
@@ -22,7 +26,17 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // GET: Societes
         public IActionResult Index()
         {
-            return View(_dalSociete.GetSocietes());
+            List<Societe> societes = null;
+            try
+            {
+                societes = _dalSociete.GetSocietes().Result;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            
+            return View(societes);
         }
 
         // GET: Societes/Details/5
@@ -45,26 +59,21 @@ namespace CarnetSanitaire.Web.UI.Controllers
 
         // GET: Societes/Create
         public IActionResult Create()
-        {
-            ViewData["CoordonneeId"] = new SelectList(_context.Coordonnees, "Id", "Adresse");
+        {            
             return View();
         }
 
         // POST: Societes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nom,CoordonneeId")] Societe societe)
+        public async Task<IActionResult> Create([Bind("Nom, Adresse, SubAdresse, CodePostal, Ville, Fax, Telephone, Email")] SocieteModelView societeModelView)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(societe);
-                await _context.SaveChangesAsync();
+                await _dalSociete.AddSocieteByModelView(societeModelView);
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["CoordonneeId"] = new SelectList(_context.Coordonnees, "Id", "Adresse", societe.CoordonneeId);
-            return View(societe);
+            }            
+            return View(societeModelView);
         }
 
         // GET: Societes/Edit/5
@@ -75,12 +84,13 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 return NotFound();
             }
 
-            var societe = await _context.Societes.FindAsync(id);
+            SocieteModelView societe = await _dalSociete.GetSocieteModelViewById(id);
+
             if (societe == null)
             {
                 return NotFound();
             }
-            ViewData["CoordonneeId"] = new SelectList(_context.Coordonnees, "Id", "Adresse", societe.CoordonneeId);
+            
             return View(societe);
         }
 
@@ -89,7 +99,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nom,CoordonneeId")] Societe societe)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, Nom, Adresse, SubAdresse, CodePostal, Ville, Fax, Telephone, Email")] SocieteModelView societe)
         {
             if (id != societe.Id)
             {
@@ -100,8 +110,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             {
                 try
                 {
-                    _context.Update(societe);
-                    await _context.SaveChangesAsync();
+                    await _dalSociete.EditSocieteByModel(societe);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -115,8 +124,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["CoordonneeId"] = new SelectList(_context.Coordonnees, "Id", "Adresse", societe.CoordonneeId);
+            }            
             return View(societe);
         }
 
@@ -128,15 +136,15 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 return NotFound();
             }
 
-            var societe = await _context.Societes
-                .Include(s => s.Coordonnee)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (societe == null)
-            {
-                return NotFound();
-            }
+            //var societe = await _context.Societes
+            //    .Include(s => s.Coordonnee)
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            //if (societe == null)
+            //{
+            //    return NotFound();
+            //}
 
-            return View(societe);
+            return View();
         }
 
         // POST: Societes/Delete/5
@@ -144,15 +152,16 @@ namespace CarnetSanitaire.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var societe = await _context.Societes.FindAsync(id);
-            _context.Societes.Remove(societe);
-            await _context.SaveChangesAsync();
+            //var societe = await _context.Societes.FindAsync(id);
+            //_context.Societes.Remove(societe);
+            //await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool SocieteExists(int id)
         {
-            return _context.Societes.Any(e => e.Id == id);
+            //return _context.Societes.Any(e => e.Id == id);
+            return true;
         }
     }
 }
