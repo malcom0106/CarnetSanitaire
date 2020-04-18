@@ -43,5 +43,24 @@ namespace CarnetSanitaire.Web.UI.Data
             }
             return societe;
         }
+
+        public async Task AddSocieteByModelView(SocieteModelView societeModelView)
+        {
+            Coordonnee coordonnee = new Coordonnee();
+            coordonnee.Adresse = societeModelView.Adresse;
+            coordonnee.SubAdresse = societeModelView.SubAdresse;
+            coordonnee.CodePostal = societeModelView.CodePostal;
+            coordonnee.Ville = societeModelView.Ville;
+            coordonnee.Fax = societeModelView.Fax;
+            coordonnee.Telephone = societeModelView.Telephone;
+            coordonnee.Email = societeModelView.Email;
+
+            Societe societe = new Societe();
+            societe.Nom = societeModelView.Nom;
+            societe.Coordonnee = coordonnee;
+
+            _context.Add(societe);
+            await _context.SaveChangesAsync();
+        } 
     }
 }

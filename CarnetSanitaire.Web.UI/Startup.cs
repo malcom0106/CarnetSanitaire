@@ -72,7 +72,11 @@ namespace CarnetSanitaire.Web.UI
             });
 
             //Injection de dependance 
-            //services.AddTransient<Data.ApplicationDbContext>();
+            services.AddTransient<Data.DataCoordonnee>();
+            services.AddTransient<Data.DataDomaine>();
+            services.AddTransient<Data.DataEtablissement>();
+            services.AddTransient<Data.DataPersonnel>();
+            services.AddTransient<Data.DataSociete>();
             services.AddTransient<IEmailSender, EmailSender>();
 
             //Accéder à une clé secrète            
