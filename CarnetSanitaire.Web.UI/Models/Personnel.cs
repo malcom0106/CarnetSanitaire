@@ -19,6 +19,11 @@ namespace CarnetSanitaire.Web.UI.Models
         [Required(ErrorMessage = "Le Prénom est requis")]
         [StringLength(50, MinimumLength = 2)]
         public string Prenom { get; set; }
-        public virtual ICollection<Etablissement> Etablissements { get; set; }
+        
+        public int SocieteId { get; set; }
+        [ForeignKey("SocieteId")]
+        public Societe Societe { get; set; }
+
+
     }
 }
