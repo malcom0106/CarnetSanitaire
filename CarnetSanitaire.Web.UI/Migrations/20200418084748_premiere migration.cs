@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CarnetSanitaire.Web.UI.Data.Migrations
+namespace CarnetSanitaire.Web.UI.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class premieremigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,6 +19,67 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Coordonnees",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Adresse = table.Column<string>(nullable: false),
+                    SubAdresse = table.Column<string>(nullable: true),
+                    CodePostal = table.Column<string>(nullable: false),
+                    Ville = table.Column<string>(nullable: false),
+                    Telephone = table.Column<string>(nullable: false),
+                    Fax = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Coordonnees", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(nullable: false),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Etablissements",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nom = table.Column<int>(maxLength: 50, nullable: false),
+                    Capacite = table.Column<int>(nullable: false),
+                    CoordonneeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Etablissements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Etablissements_Coordonnees_CoordonneeId",
+                        column: x => x.CoordonneeId,
+                        principalTable: "Coordonnees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -40,32 +100,47 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Prenom = table.Column<string>(nullable: true),
+                    Matricule = table.Column<string>(nullable: true),
+                    EtablissementId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Etablissements_EtablissementId",
+                        column: x => x.EtablissementId,
+                        principalTable: "Etablissements",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetRoleClaims",
+                name: "Societes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    RoleId = table.Column<string>(nullable: false),
-                    ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nom = table.Column<string>(nullable: false),
+                    CoordonneeId = table.Column<int>(nullable: false),
+                    EtablissementId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.PrimaryKey("PK_Societes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
+                        name: "FK_Societes_Coordonnees_CoordonneeId",
+                        column: x => x.CoordonneeId,
+                        principalTable: "Coordonnees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Societes_Etablissements_EtablissementId",
+                        column: x => x.EtablissementId,
+                        principalTable: "Etablissements",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -73,7 +148,7 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -153,6 +228,47 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Domaines",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nom = table.Column<string>(nullable: false),
+                    SocieteId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Domaines", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Domaines_Societes_SocieteId",
+                        column: x => x.SocieteId,
+                        principalTable: "Societes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Personnels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nom = table.Column<string>(maxLength: 50, nullable: false),
+                    Prenom = table.Column<string>(maxLength: 50, nullable: false),
+                    SocieteId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Personnels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Personnels_Societes_SocieteId",
+                        column: x => x.SocieteId,
+                        principalTable: "Societes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -181,6 +297,11 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_EtablissementId",
+                table: "AspNetUsers",
+                column: "EtablissementId");
+
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
@@ -191,6 +312,31 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Domaines_SocieteId",
+                table: "Domaines",
+                column: "SocieteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Etablissements_CoordonneeId",
+                table: "Etablissements",
+                column: "CoordonneeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Personnels_SocieteId",
+                table: "Personnels",
+                column: "SocieteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Societes_CoordonneeId",
+                table: "Societes",
+                column: "CoordonneeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Societes_EtablissementId",
+                table: "Societes",
+                column: "EtablissementId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -211,10 +357,25 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Domaines");
+
+            migrationBuilder.DropTable(
+                name: "Personnels");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Societes");
+
+            migrationBuilder.DropTable(
+                name: "Etablissements");
+
+            migrationBuilder.DropTable(
+                name: "Coordonnees");
         }
     }
 }

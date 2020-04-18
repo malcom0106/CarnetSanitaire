@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CarnetSanitaire.Web.UI.Data.Migrations
+namespace CarnetSanitaire.Web.UI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200417172659_maj 17042020-3")]
-    partial class maj170420203
+    [Migration("20200418084748_premiere migration")]
+    partial class premieremigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -270,6 +270,27 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                     b.ToTable("Coordonnees");
                 });
 
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Domaine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SocieteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SocieteId");
+
+                    b.ToTable("Domaines");
+                });
+
             modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Etablissement", b =>
                 {
                     b.Property<int>("Id")
@@ -287,14 +308,9 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                         .HasColumnType("int")
                         .HasMaxLength(50);
 
-                    b.Property<int?>("PersonnelId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CoordonneeId");
-
-                    b.HasIndex("PersonnelId");
 
                     b.ToTable("Etablissements");
                 });
@@ -306,9 +322,6 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("EtablissementId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nom")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -319,11 +332,40 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<int>("SocieteId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SocieteId");
+
+                    b.ToTable("Personnels");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Societe", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CoordonneeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EtablissementId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CoordonneeId");
 
                     b.HasIndex("EtablissementId");
 
-                    b.ToTable("Personnels");
+                    b.ToTable("Societes");
                 });
 
             modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ApplicationRoleClaim", b =>
@@ -384,6 +426,13 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Domaine", b =>
+                {
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.Societe", null)
+                        .WithMany("Domaines")
+                        .HasForeignKey("SocieteId");
+                });
+
             modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Etablissement", b =>
                 {
                     b.HasOne("CarnetSanitaire.Web.UI.Models.Coordonnee", "Coordonnee")
@@ -391,16 +440,27 @@ namespace CarnetSanitaire.Web.UI.Data.Migrations
                         .HasForeignKey("CoordonneeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("CarnetSanitaire.Web.UI.Models.Personnel", null)
-                        .WithMany("Etablissements")
-                        .HasForeignKey("PersonnelId");
                 });
 
             modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Personnel", b =>
                 {
-                    b.HasOne("CarnetSanitaire.Web.UI.Models.Etablissement", null)
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.Societe", "Societe")
                         .WithMany("Personnels")
+                        .HasForeignKey("SocieteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Societe", b =>
+                {
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.Coordonnee", "Coordonnee")
+                        .WithMany()
+                        .HasForeignKey("CoordonneeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.Etablissement", null)
+                        .WithMany("Societes")
                         .HasForeignKey("EtablissementId");
                 });
 #pragma warning restore 612, 618

@@ -21,8 +21,6 @@ namespace CarnetSanitaire.Web.UI.Models
         public ICollection<Domaine> Domaines { get; set; }
         public ICollection<Personnel> Personnels { get; set; }
 
-        public int EtablissementId { get; set; }
-        [ForeignKey("EtablissementId")]
-        public Etablissement Etablissement { get; set; }
+        
     }
 }

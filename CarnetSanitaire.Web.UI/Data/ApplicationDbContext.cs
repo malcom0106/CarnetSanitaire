@@ -28,7 +28,7 @@ namespace CarnetSanitaire.Web.UI.Data
         //Mise en place des relation N-N via le constructeur de model
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            
+            base.OnModelCreating(builder);
 
             //Ajouter toutes les propriétés de navigation de l’utilisateur
             builder.Entity<ApplicationUser>(b =>
