@@ -2,4 +2,7 @@
 *.log
 
 # ignore appsettings
-*.json
+*secret.json
+
+# ignore SMTP Identification class
+*SmtpIdentification.cs

@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using CarnetSanitaire.Web.UI.Services;
+using CarnetSanitaire.Web.UI.Utilities;
 
 namespace CarnetSanitaire.Web.UI.Areas.Identity.Pages.Account
 {
@@ -102,7 +103,7 @@ namespace CarnetSanitaire.Web.UI.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     
-                    EmailSender email = new EmailSender("", 0, "", "");
+                    EmailSender email = new EmailSender(SmtpIdentification.SMTP_SERVEUR, SmtpIdentification.SMTP_PORT, SmtpIdentification.SMTP_IDENTIFIANT, SmtpIdentification.SMTP_PASSWORD);
                     string sujetEmail = "Confirmation de votre email";
                     string bodyEmail = $"Merci de confirmer votre compte en cliquant sur le lien suivant : <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Cliquez Ici ! </a>.";
                     await email.SendEmailAsync(Input.Email, sujetEmail, bodyEmail);
