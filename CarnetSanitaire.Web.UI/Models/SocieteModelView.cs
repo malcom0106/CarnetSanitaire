@@ -10,6 +10,7 @@ namespace CarnetSanitaire.Web.UI.Models
     [NotMapped]
     public class SocieteModelView
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Le nom de la société est requis")]
         public string Nom { get; set; }
 

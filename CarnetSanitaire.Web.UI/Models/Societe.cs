@@ -14,9 +14,7 @@ namespace CarnetSanitaire.Web.UI.Models
 
         [Required(ErrorMessage = "Le nom de la société est requis")]
         public string Nom { get; set; }
-
-        public int CoordonneeId { get; set; }
-        [ForeignKey("CoordonneeId")]
+        
         public Coordonnee Coordonnee { get; set; }
         public ICollection<Domaine> Domaines { get; set; }
         public ICollection<Personnel> Personnels { get; set; }
