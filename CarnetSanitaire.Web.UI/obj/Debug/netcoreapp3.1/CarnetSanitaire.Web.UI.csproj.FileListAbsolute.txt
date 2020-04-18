@@ -220,4 +220,9 @@ D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Societes\Details.cshtml.g.cs
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Societes\Edit.cshtml.g.cs
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Societes\Index.cshtml.g.cs
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Personnels\Create.cshtml.g.cs
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Personnels\Delete.cshtml.g.cs
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Personnels\Details.cshtml.g.cs
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Personnels\Edit.cshtml.g.cs
+D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Personnels\Index.cshtml.g.cs
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.csprojAssemblyReference.cache

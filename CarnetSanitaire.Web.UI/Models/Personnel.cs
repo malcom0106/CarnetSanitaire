@@ -19,6 +19,15 @@ namespace CarnetSanitaire.Web.UI.Models
         [Required(ErrorMessage = "Le Prénom est requis")]
         [StringLength(50, MinimumLength = 2)]
         public string Prenom { get; set; }
+
+        [Required(ErrorMessage = "Le téléphone est requis")]
+        [DataType(DataType.PhoneNumber)]
+        public string Telephone { get; set; }
+
+        [Required(ErrorMessage = "L'Email est requis")]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+        
         
         public int SocieteId { get; set; }
         [ForeignKey("SocieteId")]

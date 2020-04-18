@@ -59,7 +59,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
 
         // GET: Societes/Create
         public IActionResult Create()
-        {            
+        {
             return View();
         }
 
