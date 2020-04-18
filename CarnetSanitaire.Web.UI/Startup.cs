@@ -73,12 +73,12 @@ namespace CarnetSanitaire.Web.UI
 
             //Injection de dependance 
             //services.AddTransient<Data.ApplicationDbContext>();
-            services.AddTransient<IEmailSender, EmailSender>();            
+            services.AddTransient<IEmailSender, EmailSender>();
 
             //Accéder à une clé secrète            
             var SmtpConfig = Configuration.GetSection("emailauthentification").Get<EmailSender>();
-            
-            
+
+
 
             services.AddControllersWithViews();
             services.AddRazorPages();
