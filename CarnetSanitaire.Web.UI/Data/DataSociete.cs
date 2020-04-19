@@ -12,8 +12,10 @@ namespace CarnetSanitaire.Web.UI.Data
 {
     public class DataSociete : DataAccess
     {
-        public DataSociete(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor) : base(context, httpContextAccessor)
+        private readonly DataEtablissement _dataEtablissement;
+        public DataSociete(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, DataEtablissement dataEtablissement) : base(context, httpContextAccessor)
         {
+            _dataEtablissement = dataEtablissement;
         }
 
         /// <summary>
@@ -25,13 +27,8 @@ namespace CarnetSanitaire.Web.UI.Data
             List<Societe> societes = null; 
             try
             {
-                var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var user = await _context.Users.Where(u => u.Id == userId).Include(u=>u.Etablissement).FirstOrDefaultAsync();
-
-                int etablissementId = user.Etablissement.Id;
-                var etablissement = _context.Etablissements.Include(e => e.Societes).FirstOrDefault(e => e.Id == etablissementId);
-                var listesociete = etablissement.Societes.AsQueryable();                
-                return listesociete.ToList();
+                Etablissement etablissement = await _dataEtablissement.GetEtablissementByUser();             
+                return etablissement.Societes.ToList();
             }
             catch (Exception ex)
             {

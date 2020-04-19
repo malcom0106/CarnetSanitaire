@@ -71,6 +71,14 @@ namespace CarnetSanitaire.Web.UI
                 options.SlidingExpiration = true;
             });
 
+            //Configuration des Sessions
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+            });
+
+
             //Injection de dependance 
             services.AddTransient<Data.DataCoordonnee>();
             services.AddTransient<Data.DataDomaine>();
@@ -102,10 +110,15 @@ namespace CarnetSanitaire.Web.UI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            //Ajout des Sessions
+            app.UseSession();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            
 
             app.UseAuthentication();
             app.UseAuthorization();

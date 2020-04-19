@@ -12,6 +12,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using CarnetSanitaire.Web.UI.Data;
+using Microsoft.AspNetCore.Http;
+using CarnetSanitaire.Web.UI.Utilities;
+using System.Security.Claims;
 
 namespace CarnetSanitaire.Web.UI.Areas.Identity.Pages.Account
 {
@@ -21,14 +25,17 @@ namespace CarnetSanitaire.Web.UI.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly DataEtablissement _dataEtablissement;
 
         public LoginModel(SignInManager<ApplicationUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            DataEtablissement dataEtablissement)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _dataEtablissement = dataEtablissement;
         }
 
         [BindProperty]
