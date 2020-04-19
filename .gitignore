@@ -6,3 +6,6 @@
 
 # ignore SMTP Identification class
 *SmtpIdentification.cs
+
+CarnetSanitaire.Web.UI/bin/*
+CarnetSanitaire.Web.UI/obj/*
