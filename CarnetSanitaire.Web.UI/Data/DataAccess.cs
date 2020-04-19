@@ -18,5 +18,16 @@ namespace CarnetSanitaire.Web.UI.Data
             _context = context;
             _httpContextAccessor = httpContextAccessor;
         }
+
+        public async Task AddLogErreur(Exception ex)
+        {
+            string message = ex.Message;
+            LogErreur logErreur = new LogErreur();
+            logErreur.MessageErreur = message;
+            logErreur.DateErreur = DateTime.Now;
+
+            _context.LogErreurs.Add(logErreur);
+            await _context.SaveChangesAsync();
+        }
     }
 }

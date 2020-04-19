@@ -16,43 +16,60 @@ namespace CarnetSanitaire.Web.UI.Controllers
     [Authorize]
     public class SocietesController : Controller
     {
-        private readonly DataSociete _dalSociete;
+        #region Global et Constructeur
+        private readonly DataSociete _dataSociete;
+        private readonly DataVerification _dataVerification;
 
-        public SocietesController(DataSociete dalSociete)
+        public SocietesController(DataSociete dataSociete,DataVerification dataVerification)
         {
-            _dalSociete = dalSociete;
+            _dataSociete = dataSociete;
+            _dataVerification = dataVerification;
         }
+        #endregion
+
 
         // GET: Societes
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             List<Societe> societes = null;
             try
             {
-                societes = _dalSociete.GetSocietes().Result;
+                societes = await _dataSociete.GetSocietes();
             }
             catch(Exception ex)
             {
-                throw ex;
+                await _dataSociete.AddLogErreur(ex);
             }
             
             return View(societes);
         }
 
         // GET: Societes/Details/5
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
+            if( !await _dataVerification.VerifySocieteInEtablissement(id))
+            {
+                return NotFound();
+            }
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var societe = _dalSociete.GetSocieteById((int)id);
-
-            if (societe == null)
+            Societe societe = null;
+            try
             {
-                return NotFound();
+                societe = await _dataSociete.GetSocieteById((int)id);
+                if (societe == null)
+                {
+                    return NotFound();
+                }
             }
+            catch(Exception ex)
+            {
+                await _dataSociete.AddLogErreur(ex);
+            } 
 
             return View(societe);
         }
@@ -64,14 +81,23 @@ namespace CarnetSanitaire.Web.UI.Controllers
         }
 
         // POST: Societes/Create
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Nom, Adresse, SubAdresse, CodePostal, Ville, Fax, Telephone, Email")] SocieteModelView societeModelView)
         {
             if (ModelState.IsValid)
             {
-                await _dalSociete.AddSocieteByModelView(societeModelView);
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    await _dataSociete.AddSocieteByModelView(societeModelView);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch(Exception ex)
+                {
+                    await _dataSociete.AddLogErreur(ex);
+                }
+                
             }            
             return View(societeModelView);
         }
@@ -79,17 +105,30 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // GET: Societes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            SocieteModelView societe = null;
+            try
             {
-                return NotFound();
+                if (!await _dataVerification.VerifySocieteInEtablissement(id))
+                {
+                    return NotFound();
+                }
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                societe = await _dataSociete.GetSocieteModelViewById(id);
+
+                if (societe == null)
+                {
+                    return NotFound();
+                }
             }
-
-            SocieteModelView societe = await _dalSociete.GetSocieteModelViewById(id);
-
-            if (societe == null)
+            catch(Exception ex)
             {
-                return NotFound();
+                await _dataSociete.AddLogErreur(ex);
             }
+            
             
             return View(societe);
         }
@@ -110,7 +149,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             {
                 try
                 {
-                    await _dalSociete.EditSocieteByModel(societe);
+                    await _dataSociete.EditSocieteByModel(societe);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -126,36 +165,6 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 return RedirectToAction(nameof(Index));
             }            
             return View(societe);
-        }
-
-        // GET: Societes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            //var societe = await _context.Societes
-            //    .Include(s => s.Coordonnee)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-            //if (societe == null)
-            //{
-            //    return NotFound();
-            //}
-
-            return View();
-        }
-
-        // POST: Societes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            //var societe = await _context.Societes.FindAsync(id);
-            //_context.Societes.Remove(societe);
-            //await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool SocieteExists(int id)

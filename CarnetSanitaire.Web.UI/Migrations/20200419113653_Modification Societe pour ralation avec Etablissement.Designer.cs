@@ -4,14 +4,16 @@ using CarnetSanitaire.Web.UI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarnetSanitaire.Web.UI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200419113653_Modification Societe pour ralation avec Etablissement")]
+    partial class ModificationSocietepourralationavecEtablissement
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -315,24 +317,6 @@ namespace CarnetSanitaire.Web.UI.Migrations
                     b.HasIndex("CoordonneeId");
 
                     b.ToTable("Etablissements");
-                });
-
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.LogErreur", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("DateErreur")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("MessageErreur")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LogErreurs");
                 });
 
             modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Personnel", b =>

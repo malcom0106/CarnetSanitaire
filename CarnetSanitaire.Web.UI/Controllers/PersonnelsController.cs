@@ -14,22 +14,34 @@ namespace CarnetSanitaire.Web.UI.Controllers
     [Authorize]
     public class PersonnelsController : Controller
     {
-        private readonly DataPersonnel _dalPersonnel;
+        #region Contrcteur et global
+        private readonly DataPersonnel _dataPersonnel;
 
-        public PersonnelsController(DataPersonnel dalPersonnel)
+        public PersonnelsController(DataPersonnel dataPersonnel)
         {
-            _dalPersonnel = dalPersonnel;
+            _dataPersonnel = dataPersonnel;
         }
+        #endregion
 
         // GET: Personnels/Index/5
-        public async Task<IActionResult> Index(int? societeId)
-        {   
-            if(societeId == null)
+        public async Task<IActionResult> Index(int? Id)
+        {
+            List<Personnel> personnels = null;
+            try
             {
-                RedirectToAction("Societes", "Index");
+                if (Id == null)
+                {
+                    return NotFound();
+                }
+                ViewBag.SocieteId = Id;
+                personnels = await _dataPersonnel.GetPersonnelOfSociety(Id);
             }
-            ViewBag.SocieteId = societeId;
-            return View(await _dalPersonnel.GetPersonnelOfSociety(societeId));
+            catch(Exception ex)
+            {
+                await _dataPersonnel.AddLogErreur(ex);
+            }
+            
+            return View(personnels);
         }
 
         // GET: Personnels/Details/5
@@ -40,9 +52,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 return NotFound();
             }
 
-            var personnel = await _context.Personnels
-                .Include(p => p.Societe)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var personnel = _dataPersonnel.GetPersonnelById(id);
             if (personnel == null)
             {
                 return NotFound();
@@ -52,56 +62,50 @@ namespace CarnetSanitaire.Web.UI.Controllers
         }
 
         // GET: Personnels/Create
-        public IActionResult Create(int? societeId)
+        public IActionResult Create(int? Id)
         {
-            if (societeId == null)
+            if (Id == null)
             {
                 return NotFound();
             }
-            ViewBag.SocieteId = societeId;
+            ViewBag.SocieteId = Id;
             return View();
         }
 
         // POST: Personnels/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nom,Prenom,SocieteId")] Personnel personnel)
+        public async Task<IActionResult> Create([Bind("Nom,Prenom,Telephone,Email,SocieteId")] Personnel personnel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(personnel);
-                await _context.SaveChangesAsync();
+                await _dataPersonnel.AddPersonnel(personnel);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SocieteId"] = new SelectList(_context.Societes, "Id", "Nom", personnel.SocieteId);
             return View(personnel);
         }
 
         // GET: Personnels/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return NotFound();
             }
+            var personnel = await _dataPersonnel.GetPersonnelById(Id);
 
-            var personnel = await _context.Personnels.FindAsync(id);
             if (personnel == null)
             {
                 return NotFound();
-            }
-            ViewData["SocieteId"] = new SelectList(_context.Societes, "Id", "Nom", personnel.SocieteId);
+            } 
+            
             return View(personnel);
         }
 
         // POST: Personnels/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nom,Prenom,SocieteId")] Personnel personnel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nom,Prenom,Telephone,Email,SocieteId")] Personnel personnel)
         {
             if (id != personnel.Id)
             {
@@ -112,8 +116,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             {
                 try
                 {
-                    _context.Update(personnel);
-                    await _context.SaveChangesAsync();
+                    await _dataPersonnel.EditPersonnel(personnel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -126,45 +129,15 @@ namespace CarnetSanitaire.Web.UI.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","Personnels", new { @id = personnel.SocieteId });
             }
-            ViewData["SocieteId"] = new SelectList(_context.Societes, "Id", "Nom", personnel.SocieteId);
             return View(personnel);
         }
-
-        // GET: Personnels/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var personnel = await _context.Personnels
-                .Include(p => p.Societe)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (personnel == null)
-            {
-                return NotFound();
-            }
-
-            return View(personnel);
-        }
-
-        // POST: Personnels/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var personnel = await _context.Personnels.FindAsync(id);
-            _context.Personnels.Remove(personnel);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+                
 
         private bool PersonnelExists(int id)
         {
-            return _context.Personnels.Any(e => e.Id == id);
+            return _dataPersonnel.PersonnelExists(id);
         }
     }
 }

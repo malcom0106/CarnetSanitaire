@@ -7,6 +7,6 @@ namespace CarnetSanitaire.Web.UI.Utilities
 {
     public static class Constantes
     {
-        //public static string CONSTANTES = "";
+        public static string ETABBLISSEMENT_ID = "etablissementId";
     }
 }

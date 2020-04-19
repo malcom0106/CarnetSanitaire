@@ -5,14 +5,17 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace CarnetSanitaire.Web.UI.Data
 {
     public class DataPersonnel : DataAccess
     {
-        public DataPersonnel(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor) : base(context, httpContextAccessor)
+        private readonly DataEtablissement _dataEtablissement;
+        public DataPersonnel(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, DataEtablissement dataEtablissement) : base(context, httpContextAccessor)
         {
+            _dataEtablissement = dataEtablissement;
         }
 
         public async Task<List<Personnel>> GetPersonnelOfSociety(int? societeId)
@@ -22,7 +25,7 @@ namespace CarnetSanitaire.Web.UI.Data
             {
                 try
                 {
-                    personnels = await _context.Personnels.Where(p => p.SocieteId == societeId).ToListAsync();
+                    personnels = await _context.Personnels.Include(p=>p.Societe).Where(p => p.SocieteId == societeId).ToListAsync();
                 }
                 catch (Exception ex)
                 {
@@ -36,5 +39,33 @@ namespace CarnetSanitaire.Web.UI.Data
 
             return personnels;
         }
+
+        public async Task<Personnel> GetPersonnelById(int? personnelId)
+        { 
+            var personnel = await _context.Personnels
+               .Include(p => p.Societe)
+               .FirstOrDefaultAsync(m => m.Id == personnelId);
+
+            return personnel;
+        }
+
+        public async Task AddPersonnel(Personnel personnel)
+        {
+            personnel.Nom = personnel.Nom.ToUpper();
+            _context.Personnels.Add(personnel);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task EditPersonnel(Personnel personnel)
+        {
+            personnel.Nom = personnel.Nom.ToUpper();
+            _context.Personnels.Update(personnel);
+            await _context.SaveChangesAsync();
+        }
+
+        public bool PersonnelExists(int id)
+        {
+            return _context.Personnels.Any(e => e.Id == id);
+        } 
     }
 }
