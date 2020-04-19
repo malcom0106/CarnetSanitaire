@@ -317,6 +317,24 @@ namespace CarnetSanitaire.Web.UI.Migrations
                     b.ToTable("Etablissements");
                 });
 
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.LogErreur", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateErreur")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MessageErreur")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LogErreurs");
+                });
+
             modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Personnel", b =>
                 {
                     b.Property<int>("Id")

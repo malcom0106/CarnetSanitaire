@@ -62,19 +62,17 @@ namespace CarnetSanitaire.Web.UI.Controllers
         }
 
         // GET: Personnels/Create
-        public IActionResult Create(int? societeId)
+        public IActionResult Create(int? Id)
         {
-            if (societeId == null)
+            if (Id == null)
             {
                 return NotFound();
             }
-            ViewBag.SocieteId = societeId;
+            ViewBag.SocieteId = Id;
             return View();
         }
 
         // POST: Personnels/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nom,Prenom,Telephone,Email,SocieteId")] Personnel personnel)
@@ -88,28 +86,27 @@ namespace CarnetSanitaire.Web.UI.Controllers
         }
 
         // GET: Personnels/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? personnelId)
         {
-            if (id == null)
+            if (personnelId == null)
             {
                 return NotFound();
             }
 
-            var personnel = await _context.Personnels.FindAsync(id);
+            var personnel = await _dataPersonnel.GetPersonnelById(personnelId);
+
             if (personnel == null)
             {
                 return NotFound();
-            }
-            ViewData["SocieteId"] = new SelectList(_context.Societes, "Id", "Nom", personnel.SocieteId);
+            } 
+            
             return View(personnel);
         }
 
         // POST: Personnels/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nom,Prenom,SocieteId")] Personnel personnel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nom,Prenom,Telephone,Email,SocieteId")] Personnel personnel)
         {
             if (id != personnel.Id)
             {
@@ -120,8 +117,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             {
                 try
                 {
-                    _context.Update(personnel);
-                    await _context.SaveChangesAsync();
+                    await _dataPersonnel.EditPersonnel(personnel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -136,43 +132,13 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SocieteId"] = new SelectList(_context.Societes, "Id", "Nom", personnel.SocieteId);
             return View(personnel);
         }
-
-        // GET: Personnels/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var personnel = await _context.Personnels
-                .Include(p => p.Societe)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (personnel == null)
-            {
-                return NotFound();
-            }
-
-            return View(personnel);
-        }
-
-        // POST: Personnels/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var personnel = await _context.Personnels.FindAsync(id);
-            _context.Personnels.Remove(personnel);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+                
 
         private bool PersonnelExists(int id)
         {
-            return _context.Personnels.Any(e => e.Id == id);
+            return _dataPersonnel.PersonnelExists(id);
         }
     }
 }

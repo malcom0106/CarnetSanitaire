@@ -51,6 +51,7 @@ namespace CarnetSanitaire.Web.UI.Data
             {
                 societe = await _context.Societes
                     .Include(s => s.Coordonnee)
+                    .Include(s => s.Personnels)
                     .FirstOrDefaultAsync(m => m.Id == id);
 
             }

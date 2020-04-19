@@ -216,7 +216,6 @@ D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.MvcApplicationPartsAssemblyInfo.cs
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\CarnetSanitaire.Web.UI.MvcApplicationPartsAssemblyInfo.cache
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Societes\Create.cshtml.g.cs
-D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Societes\Delete.cshtml.g.cs
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Societes\Details.cshtml.g.cs
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Societes\Edit.cshtml.g.cs
 D:\Projet_DotNet\CarnetSanitaire\CarnetSanitaire.Web.UI\obj\Debug\netcoreapp3.1\Razor\Views\Societes\Index.cshtml.g.cs

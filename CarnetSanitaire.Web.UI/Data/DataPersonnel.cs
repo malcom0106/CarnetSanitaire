@@ -55,9 +55,15 @@ namespace CarnetSanitaire.Web.UI.Data
             await _context.SaveChangesAsync();
         }
 
-        public async Task EditPersonnel(int? personnelId)
+        public async Task EditPersonnel(Personnel personnel)
         {
-
+            _context.Update(personnel);
+            await _context.SaveChangesAsync();
         }
+
+        public bool PersonnelExists(int id)
+        {
+            return _context.Personnels.Any(e => e.Id == id);
+        } 
     }
 }
