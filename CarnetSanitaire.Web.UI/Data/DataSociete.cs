@@ -30,13 +30,18 @@ namespace CarnetSanitaire.Web.UI.Data
             try
             {
                 Etablissement etablissement = await _dataEtablissement.GetEtablissementByUser();
-                return etablissement.Societes.ToList();
+
+                societes = await _context.Societes
+                    .Include(s => s.Coordonnee)
+                    .Include(s => s.Personnels)
+                    .Where(s=>s.EtablissementId == etablissement.Id).ToListAsync();
             }
             catch (Exception ex)
             {
-                return societes;
+                societes = new List<Societe>();
                 throw ex;
             }
+            return societes;
         }
 
         /// <summary>

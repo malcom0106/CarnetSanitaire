@@ -51,13 +51,15 @@ namespace CarnetSanitaire.Web.UI.Data
 
         public async Task AddPersonnel(Personnel personnel)
         {
-            _context.Add(personnel);
+            personnel.Nom = personnel.Nom.ToUpper();
+            _context.Personnels.Add(personnel);
             await _context.SaveChangesAsync();
         }
 
         public async Task EditPersonnel(Personnel personnel)
         {
-            _context.Update(personnel);
+            personnel.Nom = personnel.Nom.ToUpper();
+            _context.Personnels.Update(personnel);
             await _context.SaveChangesAsync();
         }
 

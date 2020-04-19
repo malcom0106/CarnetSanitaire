@@ -47,7 +47,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // GET: Societes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if( await _dataVerification.VerifySocieteInEtablissement(id))
+            if( !await _dataVerification.VerifySocieteInEtablissement(id))
             {
                 return NotFound();
             }
@@ -81,6 +81,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         }
 
         // POST: Societes/Create
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Nom, Adresse, SubAdresse, CodePostal, Ville, Fax, Telephone, Email")] SocieteModelView societeModelView)
@@ -107,7 +108,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             SocieteModelView societe = null;
             try
             {
-                if (await _dataVerification.VerifySocieteInEtablissement(id))
+                if (!await _dataVerification.VerifySocieteInEtablissement(id))
                 {
                     return NotFound();
                 }

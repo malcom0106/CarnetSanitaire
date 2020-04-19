@@ -24,17 +24,17 @@ namespace CarnetSanitaire.Web.UI.Controllers
         #endregion
 
         // GET: Personnels/Index/5
-        public async Task<IActionResult> Index(int? societeId)
+        public async Task<IActionResult> Index(int? Id)
         {
             List<Personnel> personnels = null;
             try
             {
-                if (societeId == null)
+                if (Id == null)
                 {
                     return NotFound();
                 }
-                ViewBag.SocieteId = societeId;
-                personnels = await _dataPersonnel.GetPersonnelOfSociety(societeId);
+                ViewBag.SocieteId = Id;
+                personnels = await _dataPersonnel.GetPersonnelOfSociety(Id);
             }
             catch(Exception ex)
             {
@@ -75,7 +75,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // POST: Personnels/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nom,Prenom,Telephone,Email,SocieteId")] Personnel personnel)
+        public async Task<IActionResult> Create([Bind("Nom,Prenom,Telephone,Email,SocieteId")] Personnel personnel)
         {
             if (ModelState.IsValid)
             {
@@ -86,14 +86,13 @@ namespace CarnetSanitaire.Web.UI.Controllers
         }
 
         // GET: Personnels/Edit/5
-        public async Task<IActionResult> Edit(int? personnelId)
+        public async Task<IActionResult> Edit(int? Id)
         {
-            if (personnelId == null)
+            if (Id == null)
             {
                 return NotFound();
             }
-
-            var personnel = await _dataPersonnel.GetPersonnelById(personnelId);
+            var personnel = await _dataPersonnel.GetPersonnelById(Id);
 
             if (personnel == null)
             {
@@ -130,7 +129,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","Personnels", new { @id = personnel.SocieteId });
             }
             return View(personnel);
         }
