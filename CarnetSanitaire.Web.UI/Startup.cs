@@ -85,6 +85,8 @@ namespace CarnetSanitaire.Web.UI
             services.AddTransient<Data.DataEtablissement>();
             services.AddTransient<Data.DataPersonnel>();
             services.AddTransient<Data.DataSociete>();
+            services.AddTransient<Data.DataVerification>();
+
             services.AddTransient<IEmailSender, EmailSender>();
 
             //Accéder à une clé secrète            

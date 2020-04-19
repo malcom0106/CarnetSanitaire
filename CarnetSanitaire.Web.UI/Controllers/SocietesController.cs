@@ -18,10 +18,12 @@ namespace CarnetSanitaire.Web.UI.Controllers
     {
         #region Global et Constructeur
         private readonly DataSociete _dataSociete;
+        private readonly DataVerification _dataVerification;
 
-        public SocietesController(DataSociete dataSociete)
+        public SocietesController(DataSociete dataSociete,DataVerification dataVerification)
         {
             _dataSociete = dataSociete;
+            _dataVerification = dataVerification;
         }
         #endregion
 
@@ -45,7 +47,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // GET: Societes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if( await _dataSociete.VerifySocieteInEtablissement(id))
+            if( await _dataVerification.VerifySocieteInEtablissement(id))
             {
                 return NotFound();
             }
@@ -105,7 +107,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             SocieteModelView societe = null;
             try
             {
-                if (await _dataSociete.VerifySocieteInEtablissement(id))
+                if (await _dataVerification.VerifySocieteInEtablissement(id))
                 {
                     return NotFound();
                 }

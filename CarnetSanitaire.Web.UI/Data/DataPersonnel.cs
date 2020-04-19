@@ -12,8 +12,10 @@ namespace CarnetSanitaire.Web.UI.Data
 {
     public class DataPersonnel : DataAccess
     {
-        public DataPersonnel(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor) : base(context, httpContextAccessor)
+        private readonly DataEtablissement _dataEtablissement;
+        public DataPersonnel(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, DataEtablissement dataEtablissement) : base(context, httpContextAccessor)
         {
+            _dataEtablissement = dataEtablissement;
         }
 
         public async Task<List<Personnel>> GetPersonnelOfSociety(int? societeId)
@@ -23,7 +25,7 @@ namespace CarnetSanitaire.Web.UI.Data
             {
                 try
                 {
-                    personnels = await _context.Personnels.Where(p => p.SocieteId == societeId).ToListAsync();
+                    personnels = await _context.Personnels.Include(p=>p.Societe).Where(p => p.SocieteId == societeId).ToListAsync();
                 }
                 catch (Exception ex)
                 {
@@ -39,15 +41,18 @@ namespace CarnetSanitaire.Web.UI.Data
         }
 
         public async Task<Personnel> GetPersonnelById(int? personnelId)
-        {
-            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = await _context.Users.Where(u => u.Id == userId).Include(u => u.Etablissement).FirstOrDefaultAsync();
-            int etablissementId = user.Etablissement.Id;
+        { 
             var personnel = await _context.Personnels
                .Include(p => p.Societe)
                .FirstOrDefaultAsync(m => m.Id == personnelId);
 
-            return null;
+            return personnel;
+        }
+
+        public async Task AddPersonnel(Personnel personnel)
+        {
+            _context.Add(personnel);
+            await _context.SaveChangesAsync();
         }
 
         public async Task EditPersonnel(int? personnelId)

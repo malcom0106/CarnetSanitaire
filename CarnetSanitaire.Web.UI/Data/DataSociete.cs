@@ -12,9 +12,11 @@ namespace CarnetSanitaire.Web.UI.Data
 {
     public class DataSociete : DataAccess
     {
+        private readonly DataVerification _dataVerification;
         private readonly DataEtablissement _dataEtablissement;
-        public DataSociete(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, DataEtablissement dataEtablissement) : base(context, httpContextAccessor)
+        public DataSociete(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, DataVerification dataVerification, DataEtablissement dataEtablissement) : base(context, httpContextAccessor)
         {
+            _dataVerification = dataVerification;
             _dataEtablissement = dataEtablissement;
         }
 
@@ -95,7 +97,6 @@ namespace CarnetSanitaire.Web.UI.Data
             SocieteModelView societeModelView = null;
             try
             {
-
                 Societe societe = await _context.Societes
                 .Include(s => s.Coordonnee)
                 .FirstOrDefaultAsync(s => s.Id == id);
@@ -110,7 +111,6 @@ namespace CarnetSanitaire.Web.UI.Data
                 societeModelView.Fax = societe.Coordonnee.Fax;
                 societeModelView.Telephone = societe.Coordonnee.Telephone;
                 societeModelView.Email = societe.Coordonnee.Email;
-
             }
             catch (Exception ex)
             {
@@ -150,18 +150,5 @@ namespace CarnetSanitaire.Web.UI.Data
             }
         }
 
-
-        public async Task<bool> VerifySocieteInEtablissement(int? societeId)
-        {
-            bool IsVerified = false;
-            Etablissement etablissement = await _dataEtablissement.GetEtablissementByUser();
-            Societe societeEtablissement = etablissement.Societes.FirstOrDefault(s => s.Id == societeId);
-            if (societeEtablissement != null)
-            {
-                IsVerified = true;
-            }
-
-            return IsVerified;
-        }
     }
 }
