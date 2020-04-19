@@ -24,6 +24,7 @@ namespace CarnetSanitaire.Web.UI.Data
         public DbSet<Personnel> Personnels { get; set; }
         public DbSet<Domaine> Domaines { get; set; }
         public DbSet<Societe> Societes { get; set; }
+        public DbSet<LogErreur> LogErreurs { get; set; }
 
         //Mise en place des relation N-N via le constructeur de model
         protected override void OnModelCreating(ModelBuilder builder)

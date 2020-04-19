@@ -24,10 +24,10 @@ namespace CarnetSanitaire.Web.UI.Data
         /// <returns></returns>
         public async Task<List<Societe>> GetSocietes()
         {
-            List<Societe> societes = null; 
+            List<Societe> societes = null;
             try
             {
-                Etablissement etablissement = await _dataEtablissement.GetEtablissementByUser();             
+                Etablissement etablissement = await _dataEtablissement.GetEtablissementByUser();
                 return etablissement.Societes.ToList();
             }
             catch (Exception ex)
@@ -48,8 +48,9 @@ namespace CarnetSanitaire.Web.UI.Data
             try
             {
                 societe = await _context.Societes
-                .Include(s => s.Coordonnee)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                    .Include(s => s.Coordonnee)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+
             }
             catch (Exception ex)
             {
@@ -65,6 +66,7 @@ namespace CarnetSanitaire.Web.UI.Data
         /// <returns>Rien</returns>
         public async Task AddSocieteByModelView(SocieteModelView societeModelView)
         {
+            Etablissement etablissement = await _dataEtablissement.GetEtablissementByUser();
             Coordonnee coordonnee = new Coordonnee();
             coordonnee.Adresse = societeModelView.Adresse;
             coordonnee.SubAdresse = societeModelView.SubAdresse;
@@ -76,6 +78,7 @@ namespace CarnetSanitaire.Web.UI.Data
 
             Societe societe = new Societe();
             societe.Nom = societeModelView.Nom;
+            societe.EtablissementId = etablissement.Id;
             societe.Coordonnee = coordonnee;
 
             _context.Add(societe);
@@ -92,9 +95,10 @@ namespace CarnetSanitaire.Web.UI.Data
             SocieteModelView societeModelView = null;
             try
             {
+
                 Societe societe = await _context.Societes
-                    .Include(s => s.Coordonnee)
-                    .FirstOrDefaultAsync(s=>s.Id == id);
+                .Include(s => s.Coordonnee)
+                .FirstOrDefaultAsync(s => s.Id == id);
 
                 societeModelView = new SocieteModelView();
                 societeModelView.Id = societe.Id;
@@ -103,12 +107,12 @@ namespace CarnetSanitaire.Web.UI.Data
                 societeModelView.SubAdresse = societe.Coordonnee.SubAdresse;
                 societeModelView.CodePostal = societe.Coordonnee.CodePostal;
                 societeModelView.Ville = societe.Coordonnee.Ville;
-                societeModelView.Fax= societe.Coordonnee.Fax;
+                societeModelView.Fax = societe.Coordonnee.Fax;
                 societeModelView.Telephone = societe.Coordonnee.Telephone;
                 societeModelView.Email = societe.Coordonnee.Email;
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -140,10 +144,24 @@ namespace CarnetSanitaire.Web.UI.Data
                 _context.Update(societe);
                 await _context.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
-            }            
+            }
+        }
+
+
+        public async Task<bool> VerifySocieteInEtablissement(int? societeId)
+        {
+            bool IsVerified = false;
+            Etablissement etablissement = await _dataEtablissement.GetEtablissementByUser();
+            Societe societeEtablissement = etablissement.Societes.FirstOrDefault(s => s.Id == societeId);
+            if (societeEtablissement != null)
+            {
+                IsVerified = true;
+            }
+
+            return IsVerified;
         }
     }
 }
