@@ -2,30 +2,27 @@
 
 namespace CarnetSanitaire.Web.UI.Migrations
 {
-    public partial class CorrectiontableEtablissement : Migration
+    public partial class CorrectionchampsNomdansMateriau : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
                 name: "Nom",
-                table: "Etablissements",
-                maxLength: 50,
-                nullable: false,
+                table: "Materiaus",
+                nullable: true,
                 oldClrType: typeof(int),
-                oldType: "int",
-                oldMaxLength: 50);
+                oldType: "int");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<int>(
                 name: "Nom",
-                table: "Etablissements",
+                table: "Materiaus",
                 type: "int",
-                maxLength: 50,
                 nullable: false,
                 oldClrType: typeof(string),
-                oldMaxLength: 50);
+                oldNullable: true);
         }
     }
 }

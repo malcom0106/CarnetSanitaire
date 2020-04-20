@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarnetSanitaire.Web.UI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200418171954_test suppression idcoordonne dans Societe")]
-    partial class testsuppressionidcoordonnedansSociete
+    [Migration("20200420155432_Mise a jour de travail")]
+    partial class Miseajourdetravail
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -284,12 +284,7 @@ namespace CarnetSanitaire.Web.UI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SocieteId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SocieteId");
 
                     b.ToTable("Domaines");
                 });
@@ -307,6 +302,9 @@ namespace CarnetSanitaire.Web.UI.Migrations
                     b.Property<int>("CoordonneeId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("InstallationId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nom")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -316,7 +314,128 @@ namespace CarnetSanitaire.Web.UI.Migrations
 
                     b.HasIndex("CoordonneeId");
 
+                    b.HasIndex("InstallationId");
+
                     b.ToTable("Etablissements");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Installation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CalorifugeageEcs")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CalorifugeageEf")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Diagnostique_Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Diagnostique_Intervenant")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Diagnostique_Realise")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("DispositifProtectionRetourEau")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("InterconnexionType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Interconnexion_Existance")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TypeReseauEcs")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductionId");
+
+                    b.ToTable("Installations");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Intervention", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateIntervention")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EtablissementId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Intervenant")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Lieu")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TypeInterventionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EtablissementId");
+
+                    b.HasIndex("TypeInterventionId");
+
+                    b.ToTable("Interventions");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.LogErreur", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateErreur")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MessageErreur")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LogErreurs");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Materiau", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("InstallationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Nom")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Statut")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InstallationId");
+
+                    b.ToTable("Materiaus");
                 });
 
             modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Personnel", b =>
@@ -325,6 +444,10 @@ namespace CarnetSanitaire.Web.UI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nom")
                         .IsRequired()
@@ -339,11 +462,56 @@ namespace CarnetSanitaire.Web.UI.Migrations
                     b.Property<int>("SocieteId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Telephone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SocieteId");
 
                     b.ToTable("Personnels");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Production", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("NombreBallon")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TemperatureBouclageEcs")
+                        .HasColumnType("decimal(18,1)");
+
+                    b.Property<decimal>("TemperatureDepartEcs")
+                        .HasColumnType("decimal(18,1)");
+
+                    b.Property<int?>("TypeProductionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TypeProductionId");
+
+                    b.ToTable("Productions");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ProduitTraitement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("nom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProduitTraitements");
                 });
 
             modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Societe", b =>
@@ -356,7 +524,7 @@ namespace CarnetSanitaire.Web.UI.Migrations
                     b.Property<int?>("CoordonneeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("EtablissementId")
+                    b.Property<int>("EtablissementId")
                         .HasColumnType("int");
 
                     b.Property<string>("Nom")
@@ -370,6 +538,121 @@ namespace CarnetSanitaire.Web.UI.Migrations
                     b.HasIndex("EtablissementId");
 
                     b.ToTable("Societes");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.SocieteDomaine", b =>
+                {
+                    b.Property<int>("DomaineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SocieteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DomaineId", "SocieteId");
+
+                    b.HasIndex("SocieteId");
+
+                    b.ToTable("SocieteDomaines");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Traitement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Dosage")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("InstallationId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProduitTraitementId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TypeTraitementId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InstallationId");
+
+                    b.HasIndex("ProduitTraitementId");
+
+                    b.HasIndex("TypeTraitementId");
+
+                    b.ToTable("Traitements");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Travail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateTravaux")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InstallationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PersonnelId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InstallationId");
+
+                    b.HasIndex("PersonnelId");
+
+                    b.ToTable("Travails");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.TypeIntervention", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("nom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TypeInterventions");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.TypeProduction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("nom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TypeProductions");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.TypeTraitement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("nom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TypeTraitements");
                 });
 
             modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.ApplicationRoleClaim", b =>
@@ -430,13 +713,6 @@ namespace CarnetSanitaire.Web.UI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Domaine", b =>
-                {
-                    b.HasOne("CarnetSanitaire.Web.UI.Models.Societe", null)
-                        .WithMany("Domaines")
-                        .HasForeignKey("SocieteId");
-                });
-
             modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Etablissement", b =>
                 {
                     b.HasOne("CarnetSanitaire.Web.UI.Models.Coordonnee", "Coordonnee")
@@ -444,6 +720,37 @@ namespace CarnetSanitaire.Web.UI.Migrations
                         .HasForeignKey("CoordonneeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.Installation", "Installation")
+                        .WithMany()
+                        .HasForeignKey("InstallationId");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Installation", b =>
+                {
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.Production", "Production")
+                        .WithMany()
+                        .HasForeignKey("ProductionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Intervention", b =>
+                {
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.Etablissement", "Etablissement")
+                        .WithMany("Interventions")
+                        .HasForeignKey("EtablissementId");
+
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.TypeIntervention", "TypeIntervention")
+                        .WithMany()
+                        .HasForeignKey("TypeInterventionId");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Materiau", b =>
+                {
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.Installation", null)
+                        .WithMany("Materiaux")
+                        .HasForeignKey("InstallationId");
                 });
 
             modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Personnel", b =>
@@ -455,15 +762,69 @@ namespace CarnetSanitaire.Web.UI.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Production", b =>
+                {
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.TypeProduction", "TypeProduction")
+                        .WithMany()
+                        .HasForeignKey("TypeProductionId");
+                });
+
             modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Societe", b =>
                 {
                     b.HasOne("CarnetSanitaire.Web.UI.Models.Coordonnee", "Coordonnee")
                         .WithMany()
                         .HasForeignKey("CoordonneeId");
 
-                    b.HasOne("CarnetSanitaire.Web.UI.Models.Etablissement", null)
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.Etablissement", "Etablissement")
                         .WithMany("Societes")
-                        .HasForeignKey("EtablissementId");
+                        .HasForeignKey("EtablissementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.SocieteDomaine", b =>
+                {
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.Domaine", "Domaine")
+                        .WithMany("SocieteDomaines")
+                        .HasForeignKey("DomaineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.Societe", "Societe")
+                        .WithMany("SocieteDomaines")
+                        .HasForeignKey("SocieteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Traitement", b =>
+                {
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.Installation", null)
+                        .WithMany("Traitements")
+                        .HasForeignKey("InstallationId");
+
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.ProduitTraitement", "ProduitTraitement")
+                        .WithMany()
+                        .HasForeignKey("ProduitTraitementId");
+
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.TypeTraitement", "TypeTraitement")
+                        .WithMany()
+                        .HasForeignKey("TypeTraitementId");
+                });
+
+            modelBuilder.Entity("CarnetSanitaire.Web.UI.Models.Travail", b =>
+                {
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.Installation", "Installation")
+                        .WithMany()
+                        .HasForeignKey("InstallationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarnetSanitaire.Web.UI.Models.Personnel", "Personnel")
+                        .WithMany()
+                        .HasForeignKey("PersonnelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
