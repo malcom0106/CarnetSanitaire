@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using CarnetSanitaire.Web.UI.Services;
 using CarnetSanitaire.Web.UI.Utilities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CarnetSanitaire.Web.UI.Areas.Identity.Pages.Account
 {

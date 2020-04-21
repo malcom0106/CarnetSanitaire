@@ -65,7 +65,7 @@ namespace CarnetSanitaire.Web.UI.Data
 
         public async Task<Etablissement> GetEtablissementById(int etablissementId)
         {
-            Etablissement etablissement = null;
+            Etablissement etablissement;
             try
             {
                 etablissement = await _context.Etablissements
@@ -117,20 +117,22 @@ namespace CarnetSanitaire.Web.UI.Data
 
         public async Task<ModelViewEtablissement> GetModelViewEtablissementById(int id)
         {
-            ModelViewEtablissement modelViewEtablissement = null;
+            ModelViewEtablissement modelViewEtablissement;
             try
             {
                 Etablissement etablissement = await this.GetEtablissementById(id);
-
-                modelViewEtablissement.Nom = etablissement.Nom;
-                modelViewEtablissement.Capacite = etablissement.Capacite;
-                modelViewEtablissement.Adresse = etablissement.Coordonnee.Adresse;
-                modelViewEtablissement.SubAdresse = etablissement.Coordonnee.SubAdresse;
-                modelViewEtablissement.CodePostal = etablissement.Coordonnee.CodePostal;
-                modelViewEtablissement.Ville = etablissement.Coordonnee.Ville;
-                modelViewEtablissement.Fax = etablissement.Coordonnee.Fax;
-                modelViewEtablissement.Telephone = etablissement.Coordonnee.Telephone;
-                modelViewEtablissement.Email = etablissement.Coordonnee.Email;
+                modelViewEtablissement = new ModelViewEtablissement
+                {
+                    Nom = etablissement.Nom,
+                    Capacite = etablissement.Capacite,
+                    Adresse = etablissement.Coordonnee.Adresse,
+                    SubAdresse = etablissement.Coordonnee.SubAdresse,
+                    CodePostal = etablissement.Coordonnee.CodePostal,
+                    Ville = etablissement.Coordonnee.Ville,
+                    Fax = etablissement.Coordonnee.Fax,
+                    Telephone = etablissement.Coordonnee.Telephone,
+                    Email = etablissement.Coordonnee.Email
+                };
             }
             catch(Exception ex)
             {
