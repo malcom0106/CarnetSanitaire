@@ -25,5 +25,10 @@ namespace CarnetSanitaire.Web.UI.Models
         public Coordonnee Coordonnee { get; set;  }
 
         public ICollection<Societe> Societes { get; set; }
+
+        public ICollection<Intervention> Interventions { get; set; }
+        public ICollection<ReleveTemperature> ReleveTemperatures { get; set; }
+
+        public Installation Installation { get; set; }
     }
 }

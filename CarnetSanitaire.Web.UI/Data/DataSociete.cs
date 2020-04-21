@@ -12,11 +12,9 @@ namespace CarnetSanitaire.Web.UI.Data
 {
     public class DataSociete : DataAccess
     {
-        private readonly DataVerification _dataVerification;
         private readonly DataEtablissement _dataEtablissement;
-        public DataSociete(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, DataVerification dataVerification, DataEtablissement dataEtablissement) : base(context, httpContextAccessor)
+        public DataSociete(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, DataEtablissement dataEtablissement) : base(context, httpContextAccessor)
         {
-            _dataVerification = dataVerification;
             _dataEtablissement = dataEtablissement;
         }
 
@@ -72,22 +70,26 @@ namespace CarnetSanitaire.Web.UI.Data
         /// </summary>
         /// <param name="societeModelView">Model de vue compose de societe et de coordonnées</param>
         /// <returns>Rien</returns>
-        public async Task AddSocieteByModelView(SocieteModelView societeModelView)
+        public async Task AddSocieteByModelView(ModelViewSociete societeModelView)
         {
             Etablissement etablissement = await _dataEtablissement.GetEtablissementByUser();
-            Coordonnee coordonnee = new Coordonnee();
-            coordonnee.Adresse = societeModelView.Adresse;
-            coordonnee.SubAdresse = societeModelView.SubAdresse;
-            coordonnee.CodePostal = societeModelView.CodePostal;
-            coordonnee.Ville = societeModelView.Ville;
-            coordonnee.Fax = societeModelView.Fax;
-            coordonnee.Telephone = societeModelView.Telephone;
-            coordonnee.Email = societeModelView.Email;
+            Coordonnee coordonnee = new Coordonnee
+            {
+                Adresse = societeModelView.Adresse,
+                SubAdresse = societeModelView.SubAdresse,
+                CodePostal = societeModelView.CodePostal,
+                Ville = societeModelView.Ville,
+                Fax = societeModelView.Fax,
+                Telephone = societeModelView.Telephone,
+                Email = societeModelView.Email
+            };
 
-            Societe societe = new Societe();
-            societe.Nom = societeModelView.Nom;
-            societe.EtablissementId = etablissement.Id;
-            societe.Coordonnee = coordonnee;
+            Societe societe = new Societe
+            {
+                Nom = societeModelView.Nom,
+                EtablissementId = etablissement.Id,
+                Coordonnee = coordonnee
+            };
 
             _context.Add(societe);
             await _context.SaveChangesAsync();
@@ -98,25 +100,27 @@ namespace CarnetSanitaire.Web.UI.Data
         /// </summary>
         /// <param name="id">Id de la societe</param>
         /// <returns>Un model de vue SocieteModelView</returns>
-        public async Task<SocieteModelView> GetSocieteModelViewById(int? id)
+        public async Task<ModelViewSociete> GetSocieteModelViewById(int? id)
         {
-            SocieteModelView societeModelView = null;
+            ModelViewSociete societeModelView = null;
             try
             {
                 Societe societe = await _context.Societes
                 .Include(s => s.Coordonnee)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
-                societeModelView = new SocieteModelView();
-                societeModelView.Id = societe.Id;
-                societeModelView.Nom = societe.Nom;
-                societeModelView.Adresse = societe.Coordonnee.Adresse;
-                societeModelView.SubAdresse = societe.Coordonnee.SubAdresse;
-                societeModelView.CodePostal = societe.Coordonnee.CodePostal;
-                societeModelView.Ville = societe.Coordonnee.Ville;
-                societeModelView.Fax = societe.Coordonnee.Fax;
-                societeModelView.Telephone = societe.Coordonnee.Telephone;
-                societeModelView.Email = societe.Coordonnee.Email;
+                societeModelView = new ModelViewSociete
+                {
+                    Id = societe.Id,
+                    Nom = societe.Nom,
+                    Adresse = societe.Coordonnee.Adresse,
+                    SubAdresse = societe.Coordonnee.SubAdresse,
+                    CodePostal = societe.Coordonnee.CodePostal,
+                    Ville = societe.Coordonnee.Ville,
+                    Fax = societe.Coordonnee.Fax,
+                    Telephone = societe.Coordonnee.Telephone,
+                    Email = societe.Coordonnee.Email
+                };
             }
             catch (Exception ex)
             {
@@ -130,7 +134,7 @@ namespace CarnetSanitaire.Web.UI.Data
         /// </summary>
         /// <param name="societeModelView">Model de vue compose de societe et de coordonnées</param>
         /// <returns>Rien</returns>
-        public async Task EditSocieteByModel(SocieteModelView societeModelView)
+        public async Task EditSocieteByModel(ModelViewSociete societeModelView)
         {
             try
             {
@@ -154,6 +158,12 @@ namespace CarnetSanitaire.Web.UI.Data
             {
                 throw ex;
             }
+        }
+
+
+        public bool SocieteExists(int id)
+        {
+            return _context.Societes.Any(e => e.Id == id);
         }
 
     }

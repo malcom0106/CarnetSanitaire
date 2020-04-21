@@ -16,7 +16,7 @@ namespace CarnetSanitaire.Web.UI.Models
         public string Nom { get; set; }
         
         public Coordonnee Coordonnee { get; set; }
-        public ICollection<Domaine> Domaines { get; set; }
+        public ICollection<SocieteDomaine> SocieteDomaines { get; set; }
         public ICollection<Personnel> Personnels { get; set; }
         public int EtablissementId { get; set; }
         [ForeignKey("EtablissementId")]

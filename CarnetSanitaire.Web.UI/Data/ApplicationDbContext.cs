@@ -18,18 +18,66 @@ namespace CarnetSanitaire.Web.UI.Data
         {
         }
 
-        //Ajout des classe en BDD
+        //DbSet des tables Principales
         public DbSet<Coordonnee> Coordonnees { get; set; }
         public DbSet<Etablissement> Etablissements { get; set; }
         public DbSet<Personnel> Personnels { get; set; }
         public DbSet<Domaine> Domaines { get; set; }
         public DbSet<Societe> Societes { get; set; }
         public DbSet<LogErreur> LogErreurs { get; set; }
+        public DbSet<Installation> Installations { get; set; }
+        public DbSet<Intervention> Interventions { get; set; }
+        public DbSet<Materiau> Materiaus { get; set; }
+        public DbSet<Production> Productions { get; set; }
+        public DbSet<ProduitTraitement> ProduitTraitements { get; set; }
+        public DbSet<Traitement> Traitements { get; set; }
+        public DbSet<Travail> Travails { get; set; }
+        public DbSet<TypeIntervention> TypeInterventions { get; set; }
+        public DbSet<TypeProduction> TypeProductions { get; set; }
+        public DbSet<TypeTraitement> TypeTraitements { get; set; }
+        public DbSet<TypeReseau> TypeReseaus { get; set; }
+        public DbSet<TypePoint> TypePoints { get; set; }
+        public DbSet<ReleveTemperature> ReleveTemperatures { get; set; }
+        public DbSet<PointReleveTemperature> PointReleveTemperatures { get; set; }
 
-        //Mise en place des relation N-N via le constructeur de model
+        
+        //DbSet Table Intermediare
+        public DbSet<SocieteDomaine> SocieteDomaines { get; set; }
+        public DbSet<InstallationMateriau> InstallationMateriaus { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            //Relation N-N avec tables intermediare Societes et Domaines
+            builder.Entity<SocieteDomaine>()
+                .HasKey(sd => new { sd.DomaineId, sd.SocieteId });
+
+            builder.Entity<SocieteDomaine>()
+                .HasOne(bc => bc.Societe)
+                .WithMany(b => b.SocieteDomaines)
+                .HasForeignKey(bc => bc.SocieteId);
+
+            builder.Entity<SocieteDomaine>()
+                .HasOne(bc => bc.Domaine)
+                .WithMany(c => c.SocieteDomaines)
+                .HasForeignKey(bc => bc.DomaineId);
+
+            //Relation N-N avec tables intermediare Installations et Mateiaux
+            builder.Entity<InstallationMateriau>()
+                .HasKey(im => new { im.InstallationId, im.MateriauId });
+
+            builder.Entity<InstallationMateriau>()
+                .HasOne(bc => bc.Installation)
+                .WithMany(b => b.InstallationMateriaus)
+                .HasForeignKey(bc => bc.InstallationId);
+
+            builder.Entity<InstallationMateriau>()
+                .HasOne(bc => bc.Materiau)
+                .WithMany(c => c.InstallationMateriaus)
+                .HasForeignKey(bc => bc.MateriauId);
+
 
             //Ajouter toutes les propriétés de navigation de l’utilisateur
             builder.Entity<ApplicationUser>(b =>

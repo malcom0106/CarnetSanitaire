@@ -2,14 +2,6 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<ul id="nav-mobile" class="right hide-on-med-and-down">
-    <li>
-        <a class="" asp-area="" asp-controller="Societes" asp-action="Index">Societes</a>
-    </li>
-    <li>
-        <a class="" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-    </li>
-
     @if (SignInManager.IsSignedIn(User))
     {
         <li >
@@ -30,4 +22,3 @@
             <a class="" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
-</ul>

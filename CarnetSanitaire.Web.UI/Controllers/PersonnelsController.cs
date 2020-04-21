@@ -52,7 +52,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 return NotFound();
             }
 
-            var personnel = _dataPersonnel.GetPersonnelById(id);
+            var personnel = await _dataPersonnel.GetPersonnelById(id);
             if (personnel == null)
             {
                 return NotFound();

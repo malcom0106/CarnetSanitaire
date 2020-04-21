@@ -26,13 +26,11 @@ namespace CarnetSanitaire.Web.UI.Models
 
         [Required(ErrorMessage = "L'Email est requis")]
         [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
-        
+        public string Email { get; set; }        
         
         public int SocieteId { get; set; }
         [ForeignKey("SocieteId")]
         public Societe Societe { get; set; }
-
-
+        public bool Statut { get; set; }
     }
 }
