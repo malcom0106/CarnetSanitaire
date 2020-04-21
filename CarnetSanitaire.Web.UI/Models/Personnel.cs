@@ -31,5 +31,6 @@ namespace CarnetSanitaire.Web.UI.Models
         public int SocieteId { get; set; }
         [ForeignKey("SocieteId")]
         public Societe Societe { get; set; }
+        public bool Statut { get; set; }
     }
 }

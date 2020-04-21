@@ -14,5 +14,6 @@ namespace CarnetSanitaire.Web.UI.Models
         [Required(ErrorMessage ="Le nom du domaine est requis")]
         public string Nom { get; set; }
         public ICollection<SocieteDomaine> SocieteDomaines { get; set; }
+        public bool Statut { get; set; }
     }
 }

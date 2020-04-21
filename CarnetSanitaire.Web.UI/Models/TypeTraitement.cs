@@ -8,6 +8,7 @@ namespace CarnetSanitaire.Web.UI.Models
     public class TypeTraitement
     {
         public int Id { get; set; }
-        public string nom { get; set; }
+        public string Nom { get; set; }
+        public bool Statut { get; set; }
     }
 }

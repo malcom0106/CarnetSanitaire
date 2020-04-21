@@ -20,7 +20,7 @@ namespace CarnetSanitaire.Web.UI.Models
         public string InterconnexionType { get; set; }
         public int CalorifugeageEf { get; set; }
         public int CalorifugeageEcs { get; set; }
-        public int TypeReseauEcs { get; set; }        
+        public TypeReseau TypeReseau { get; set; }        
         #endregion
 
         #region Production

@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 namespace CarnetSanitaire.Web.UI.Models
 {
-    public class ProduitTraitement
+    public class TypeReseau
     {
         public int Id { get; set; }
         public string Nom { get; set; }
-
         public bool Statut { get; set; }
     }
 }
