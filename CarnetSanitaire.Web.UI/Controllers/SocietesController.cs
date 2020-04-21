@@ -31,7 +31,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // GET: Societes
         public async Task<IActionResult> Index()
         {
-            List<Societe> societes = null;
+            List<Societe> societes;
             try
             {
                 societes = await _dataSociete.GetSocietes();
@@ -39,6 +39,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             catch(Exception ex)
             {
                 await _dataSociete.AddLogErreur(ex);
+                return NotFound();
             }
             
             return View(societes);
@@ -57,7 +58,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 return NotFound();
             }
 
-            Societe societe = null;
+            Societe societe;
             try
             {
                 societe = await _dataSociete.GetSocieteById((int)id);
@@ -69,6 +70,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             catch(Exception ex)
             {
                 await _dataSociete.AddLogErreur(ex);
+                return NotFound();
             } 
 
             return View(societe);
@@ -84,7 +86,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Nom, Adresse, SubAdresse, CodePostal, Ville, Fax, Telephone, Email")] SocieteModelView societeModelView)
+        public async Task<IActionResult> Create([Bind("Nom, Adresse, SubAdresse, CodePostal, Ville, Fax, Telephone, Email")] ModelViewSociete societeModelView)
         {
             if (ModelState.IsValid)
             {
@@ -105,7 +107,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // GET: Societes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            SocieteModelView societe = null;
+            ModelViewSociete societe;
             try
             {
                 if (!await _dataVerification.VerifySocieteInEtablissement(id))
@@ -127,6 +129,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             catch(Exception ex)
             {
                 await _dataSociete.AddLogErreur(ex);
+                return NotFound();
             }
             
             
@@ -138,7 +141,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id, Nom, Adresse, SubAdresse, CodePostal, Ville, Fax, Telephone, Email")] SocieteModelView societe)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, Nom, Adresse, SubAdresse, CodePostal, Ville, Fax, Telephone, Email")] ModelViewSociete societe)
         {
             if (id != societe.Id)
             {
@@ -153,7 +156,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SocieteExists(societe.Id))
+                    if (!_dataSociete.SocieteExists(societe.Id))
                     {
                         return NotFound();
                     }
@@ -167,10 +170,6 @@ namespace CarnetSanitaire.Web.UI.Controllers
             return View(societe);
         }
 
-        private bool SocieteExists(int id)
-        {
-            //return _context.Societes.Any(e => e.Id == id);
-            return true;
-        }
+        
     }
 }

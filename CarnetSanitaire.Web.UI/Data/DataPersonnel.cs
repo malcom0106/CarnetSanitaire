@@ -12,10 +12,10 @@ namespace CarnetSanitaire.Web.UI.Data
 {
     public class DataPersonnel : DataAccess
     {
-        private readonly DataEtablissement _dataEtablissement;
-        public DataPersonnel(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, DataEtablissement dataEtablissement) : base(context, httpContextAccessor)
+
+        public DataPersonnel(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor) : base(context, httpContextAccessor)
         {
-            _dataEtablissement = dataEtablissement;
+
         }
 
         public async Task<List<Personnel>> GetPersonnelOfSociety(int? societeId)

@@ -15,5 +15,6 @@ namespace CarnetSanitaire.Web.UI.Models
         public string Lieu { get; set; }
         public TypeIntervention TypeIntervention { get; set; }
         public Etablissement Etablissement { get; set; }
+        public string PieceJointe { get; set; }
     }
 }

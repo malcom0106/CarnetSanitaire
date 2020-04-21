@@ -8,15 +8,16 @@ using System.Threading.Tasks;
 namespace CarnetSanitaire.Web.UI.Models
 {
     [NotMapped]
-    public class SocieteModelView
+    public class ModelViewEtablissement
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Le nom de la société est requis")]
         public string Nom { get; set; }
+        public int Capacite { get; set; }
 
         [Required(ErrorMessage = "L'adresse est requise")]
         public string Adresse { get; set; }
-        [Display(Name="Complement d'adresse")]
+        [Display(Name = "Complement d'adresse")]
         public string SubAdresse { get; set; }
 
         [Required(ErrorMessage = "Le code postal est requis")]
