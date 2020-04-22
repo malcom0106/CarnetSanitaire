@@ -5,14 +5,14 @@
     int SocieteId = (int)ViewBag.SocieteId;
 }
 
-<h1>Index</h1>
+<h1>@ViewBag.Societe</h1>
 
-<p>
-    <a asp-action="Create" asp-route-id="@SocieteId">Nouvelle Personne</a>
-</p>
 <table class="table" id="personnel">
     <thead>
         <tr>
+            <th>
+                
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nom)
             </th>
@@ -33,6 +33,18 @@
         {
             <tr>
                 <td>
+                    <a asp-action="ChangeStatut" asp-controller="Personnels" asp-route-idPersonnel="@item.Id" asp-route-idSociete="@item.SocieteId">
+                        @if (item.Statut)
+                        {
+                            <i class="fas fa-check" style="color:green"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-times" style="color:red"></i>
+                        }
+                    </a> 
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Nom)
                 </td>
                 <td>
@@ -52,11 +64,17 @@
         }
     </tbody>
 </table>
+<div class="mt-3">
+    <a asp-action="Create" asp-route-id="@SocieteId" class="col-12 btn btn-outline-success">Nouvelle Personne</a>
+</div>
+
 
 @section scripts{
     <script type="text/javascript">
         $(document).ready(function () {
             $('#personnel').DataTable();
         });
+
+
     </script>
 }

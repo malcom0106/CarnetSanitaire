@@ -35,6 +35,8 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 }
                 ViewBag.SocieteId = Id;
                 personnels = await _dataPersonnel.GetPersonnelOfSociety(Id);
+                string societe = personnels.FirstOrDefault().Societe.Nom;
+                ViewBag.Societe = societe;
             }
             catch(Exception ex)
             {
@@ -118,26 +120,37 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 {
                     await _dataPersonnel.EditPersonnel(personnel);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
-                    if (!PersonnelExists(personnel.Id))
+                    if (!_dataPersonnel.PersonnelExists(personnel.Id))
                     {
                         return NotFound();
                     }
                     else
                     {
-                        throw;
+                        await _dataPersonnel.AddLogErreur(ex);
+                        return NotFound();
                     }
                 }
                 return RedirectToAction("Index","Personnels", new { @id = personnel.SocieteId });
             }
             return View(personnel);
         }
-                
-
-        private bool PersonnelExists(int id)
+        public async Task<IActionResult> ChangeStatut(int? idPersonnel, int? idSociete)
         {
-            return _dataPersonnel.PersonnelExists(id);
+            if(idSociete == null || idPersonnel == null)
+            {
+                return NotFound();
+            }
+            try { 
+            await _dataPersonnel.ChangeStatut((int)idPersonnel);
+            }
+            catch (Exception ex)
+            {
+                await _dataPersonnel.AddLogErreur(ex);
+                return NotFound();
+            }
+            return RedirectToAction("Index", "Personnels", new { @id = idSociete });
         }
     }
 }
