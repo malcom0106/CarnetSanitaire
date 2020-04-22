@@ -39,6 +39,10 @@ namespace CarnetSanitaire.Web.UI.Data
         public DbSet<TypePoint> TypePoints { get; set; }
         public DbSet<ReleveTemperature> ReleveTemperatures { get; set; }
         public DbSet<PointReleveTemperature> PointReleveTemperatures { get; set; }
+        public DbSet<CampagneAnalyse> CampagneAnalyses { get; set; }
+        public DbSet<Prelevement> Prelevements { get; set; }
+        public DbSet<Analyse> Analyses { get; set; }
+        public DbSet<ParametreAnalyse> ParametreAnalyses { get; set; }
 
         
         //DbSet Table Intermediare
