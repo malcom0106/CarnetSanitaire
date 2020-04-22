@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
-    int SocieteId = (int) ViewBag.SocieteId;
+    int SocieteId = (int)ViewBag.SocieteId;
 }
 
 <h1>Index</h1>
@@ -10,7 +10,7 @@
 <p>
     <a asp-action="Create" asp-route-id="@SocieteId">Nouvelle Personne</a>
 </p>
-<table class="table">
+<table class="table" id="personnel">
     <thead>
         <tr>
             <th>
@@ -29,25 +29,34 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Prenom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telephone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prenom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telephone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#personnel').DataTable();
+        });
+    </script>
+}

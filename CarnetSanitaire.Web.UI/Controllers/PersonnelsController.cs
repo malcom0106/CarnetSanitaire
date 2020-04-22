@@ -14,7 +14,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
     [Authorize]
     public class PersonnelsController : Controller
     {
-        #region Contrcteur et global
+        #region Contructeur et global
         private readonly DataPersonnel _dataPersonnel;
 
         public PersonnelsController(DataPersonnel dataPersonnel)
@@ -80,7 +80,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             if (ModelState.IsValid)
             {
                 await _dataPersonnel.AddPersonnel(personnel);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index",new { @id = personnel.SocieteId });
             }
             return View(personnel);
         }
