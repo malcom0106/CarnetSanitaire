@@ -14,15 +14,18 @@ namespace CarnetSanitaire.Web.UI.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly CarnetSanitaire.Web.UI.Data.DataEtablissement _dataEtablissement;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, CarnetSanitaire.Web.UI.Data.DataEtablissement dataEtablissement)
         {            
             _logger = logger;
+            _dataEtablissement = dataEtablissement;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            Etablissement etablissement = await _dataEtablissement.GetEtablissementByUser();
+            return View(etablissement);
         }
 
         public IActionResult Privacy()

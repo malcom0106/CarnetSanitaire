@@ -70,7 +70,9 @@ namespace CarnetSanitaire.Web.UI.Controllers
             {
                 return NotFound();
             }
+            string societe =  _dataPersonnel.GetPersonnelOfSociety(Id).Result.FirstOrDefault().Societe.Nom;
             ViewBag.SocieteId = Id;
+            ViewBag.Societe = societe;
             return View();
         }
 
