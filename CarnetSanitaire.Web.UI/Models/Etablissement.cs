@@ -30,5 +30,6 @@ namespace CarnetSanitaire.Web.UI.Models
         public ICollection<ReleveTemperature> ReleveTemperatures { get; set; }
 
         public Installation Installation { get; set; }
+        public List<CampagneAnalyse> CampagneAnalyses { get; set; }
     }
 }

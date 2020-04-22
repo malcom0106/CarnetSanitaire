@@ -23,7 +23,11 @@ namespace CarnetSanitaire.Web.UI.Data
             {
                 etablissements = await (_context.Etablissements
                     .Include(e => e.Societes)
-                    .Include(e => e.Coordonnee))
+                    .Include(e => e.Coordonnee)
+                    .Include(e => e.ReleveTemperatures)
+                    .Include(e => e.CampagneAnalyses)
+                    .Include(e => e.Installation)
+                    .Include(e => e.Interventions))
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -51,6 +55,10 @@ namespace CarnetSanitaire.Web.UI.Data
                 etablissement = await _context.Etablissements
                     .Include(e => e.Societes)
                     .Include(e => e.Coordonnee)
+                    .Include(e => e.ReleveTemperatures)
+                    .Include(e => e.CampagneAnalyses)
+                    .Include(e => e.Installation)
+                    .Include(e => e.Interventions)
                     .Where(e => e.Id == user.Etablissement.Id)
                     .FirstOrDefaultAsync();
             }
@@ -71,6 +79,10 @@ namespace CarnetSanitaire.Web.UI.Data
                 etablissement = await _context.Etablissements
                     .Include(e => e.Societes)
                     .Include(e => e.Coordonnee)
+                    .Include(e => e.ReleveTemperatures)
+                    .Include(e => e.CampagneAnalyses)
+                    .Include(e => e.Installation)
+                    .Include(e => e.Interventions)
                     .Where(e => e.Id == etablissementId)
                     .FirstOrDefaultAsync();
             }

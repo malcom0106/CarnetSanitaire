@@ -25,7 +25,7 @@ namespace CarnetSanitaire.Web.UI.Data
             {
                 try
                 {
-                    personnels = await _context.Personnels.Include(p=>p.Societe).Where(p => p.SocieteId == societeId).ToListAsync();
+                    personnels = await _context.Personnels.Include(p => p.Societe).Where(p => p.SocieteId == societeId).ToListAsync();
                 }
                 catch (Exception ex)
                 {
@@ -41,31 +41,69 @@ namespace CarnetSanitaire.Web.UI.Data
         }
 
         public async Task<Personnel> GetPersonnelById(int? personnelId)
-        { 
-            var personnel = await _context.Personnels
-               .Include(p => p.Societe)
-               .FirstOrDefaultAsync(m => m.Id == personnelId);
+        {
+            Personnel personnel;
+            try
+            {
+                personnel = await _context.Personnels
+                   .Include(p => p.Societe)
+                   .FirstOrDefaultAsync(m => m.Id == personnelId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
             return personnel;
         }
 
         public async Task AddPersonnel(Personnel personnel)
         {
-            personnel.Nom = personnel.Nom.ToUpper();
-            _context.Personnels.Add(personnel);
-            await _context.SaveChangesAsync();
+            try
+            {
+                personnel.Nom = personnel.Nom.ToUpper();
+                personnel.Statut = true;
+                _context.Personnels.Add(personnel);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task EditPersonnel(Personnel personnel)
         {
-            personnel.Nom = personnel.Nom.ToUpper();
-            _context.Personnels.Update(personnel);
-            await _context.SaveChangesAsync();
+            try
+            {
+                personnel.Nom = personnel.Nom.ToUpper();
+                _context.Personnels.Update(personnel);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task ChangeStatut(int personnelId)
+        {
+            try
+            {
+                Personnel personnel = _context.Personnels.Find(personnelId);
+                personnel.Statut = !personnel.Statut;
+                _context.Personnels.Update(personnel);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public bool PersonnelExists(int id)
         {
             return _context.Personnels.Any(e => e.Id == id);
-        } 
+        }
     }
 }
