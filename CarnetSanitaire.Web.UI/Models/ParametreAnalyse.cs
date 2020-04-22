@@ -11,5 +11,6 @@ namespace CarnetSanitaire.Web.UI.Models
         public string Nom { get; set; }
         public string Diminutif { get; set; }
         public string Description { get; set; }
+        public bool Statut { get; set; }
     }
 }
