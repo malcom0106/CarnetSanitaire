@@ -33,6 +33,7 @@ namespace CarnetSanitaire.Web.UI.Models
         public List<Traitement> Traitements { get; set; }
         #endregion
         public bool DispositifProtectionRetourEau { get; set; }
+        public Etablissement Etablissement { get; set; }
 
     }
 }
