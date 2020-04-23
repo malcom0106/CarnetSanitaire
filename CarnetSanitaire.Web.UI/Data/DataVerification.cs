@@ -11,12 +11,10 @@ namespace CarnetSanitaire.Web.UI.Data
     public class DataVerification : DataAccess
     {
         #region Contrcteur et global
-        private readonly DataPersonnel _dataPersonnel;
         private readonly DataEtablissement _dataEtablissement;
-        public DataVerification(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, DataPersonnel dataPersonnel, DataEtablissement dataEtablissement) : base(context, httpContextAccessor)
+        public DataVerification(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, DataEtablissement dataEtablissement) : base(context, httpContextAccessor)
         {
             _dataEtablissement = dataEtablissement;
-            _dataPersonnel = dataPersonnel;
         }
         #endregion
 

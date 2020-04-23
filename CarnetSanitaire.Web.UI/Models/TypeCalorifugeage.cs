@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CarnetSanitaire.Web.UI.Models
 {
-    public class Materiau
+    public class TypeCalorifugeage
     {
         public int Id { get; set; }
         public string Nom { get; set; }
