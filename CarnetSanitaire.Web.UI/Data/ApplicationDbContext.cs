@@ -43,11 +43,11 @@ namespace CarnetSanitaire.Web.UI.Data
         public DbSet<Prelevement> Prelevements { get; set; }
         public DbSet<Analyse> Analyses { get; set; }
         public DbSet<ParametreAnalyse> ParametreAnalyses { get; set; }
+        public DbSet<TypeCalorifugeage> TypeCalorifugeages { get; set; }
 
         
         //DbSet Table Intermediare
         public DbSet<SocieteDomaine> SocieteDomaines { get; set; }
-        public DbSet<InstallationMateriau> InstallationMateriaus { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -67,20 +67,6 @@ namespace CarnetSanitaire.Web.UI.Data
                 .HasOne(bc => bc.Domaine)
                 .WithMany(c => c.SocieteDomaines)
                 .HasForeignKey(bc => bc.DomaineId);
-
-            //Relation N-N avec tables intermediare Installations et Mateiaux
-            builder.Entity<InstallationMateriau>()
-                .HasKey(im => new { im.InstallationId, im.MateriauId });
-
-            builder.Entity<InstallationMateriau>()
-                .HasOne(bc => bc.Installation)
-                .WithMany(b => b.InstallationMateriaus)
-                .HasForeignKey(bc => bc.InstallationId);
-
-            builder.Entity<InstallationMateriau>()
-                .HasOne(bc => bc.Materiau)
-                .WithMany(c => c.InstallationMateriaus)
-                .HasForeignKey(bc => bc.MateriauId);
 
 
             //Ajouter toutes les propriétés de navigation de l’utilisateur

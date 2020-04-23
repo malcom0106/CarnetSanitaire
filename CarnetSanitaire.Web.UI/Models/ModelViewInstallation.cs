@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CarnetSanitaire.Web.UI.Models
 {
-    public class Installation
+    public class ModelViewInstallation
     {
         public int Id { get; set; }
         #region Diag
-        [Display(Name ="Diagnostique Réalisé")]
+        [Display(Name = "Diagnostique Réalisé")]
         public bool Diagnostique_Realise { get; set; }
 
         [DataType(DataType.Date)]
@@ -24,19 +23,19 @@ namespace CarnetSanitaire.Web.UI.Models
         #endregion
         #region Reseau
         [Display(Name = "Materiau(x)")]
-        public List<Materiau> Materiaux { get; set; }
+        public List<int> Materiaux { get; set; }
 
         [Display(Name = "Existe-t-il une interconnexion ?")]
         public bool Interconnexion_Existance { get; set; }
 
         [Display(Name = "Type d'interconnexion ")]
-        public string InterconnexionType { get; set; }
+        public string? InterconnexionType { get; set; }
 
         [Display(Name = "Calorifugeage EFS")]
-        public TypeCalorifugeage CalorifugeageEf { get; set; }
+        public int? CalorifugeageEfId { get; set; }
 
         [Display(Name = "Calorifugeage ECS")]
-        public TypeCalorifugeage CalorifugeageEcs { get; set; }
+        public int? CalorifugeageEcsId { get; set; }
 
         [Display(Name = "Type de Reseau")]
         public TypeReseau TypeReseau { get; set; }
@@ -45,8 +44,6 @@ namespace CarnetSanitaire.Web.UI.Models
         #region Production
         [Display(Name = "Production")]
         public int? ProductionId { get; set; }
-        [ForeignKey("ProductionId")]
-        public Production Production { get; set; }
         #endregion
 
         #region Traitement
@@ -56,6 +53,5 @@ namespace CarnetSanitaire.Web.UI.Models
         [Display(Name = "Dispositif de Protection contre les retours d'eau ")]
         #endregion
         public bool DispositifProtectionRetourEau { get; set; }
-
     }
 }

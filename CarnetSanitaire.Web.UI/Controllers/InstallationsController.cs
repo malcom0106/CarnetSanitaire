@@ -15,7 +15,6 @@ namespace CarnetSanitaire.Web.UI.Controllers
         private readonly ApplicationDbContext _context;
         private readonly DataInstallation _dataInstallation;
 
-
         public InstallationsController(ApplicationDbContext context, DataInstallation dataInstallation)
         {
             _context = context;
@@ -25,11 +24,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // GET: Installations/Details/5
         public async Task<IActionResult> Details()
         {
-            Installation installation;
-            if (id == null)
-            {
-                return NotFound();
-            }
+            Installation installation;            
             try
             {
                 installation = await _dataInstallation.GetInstallation();
@@ -41,7 +36,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             
             if (installation == null)
             {
-                return NotFound();
+                return RedirectToAction("Create");
             }
 
             return View(installation);
@@ -50,7 +45,11 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // GET: Installations/Create
         public IActionResult Create()
         {
-            ViewData["ProductionId"] = new SelectList(_context.Productions, "Id", "Id");
+            ViewBag.ProductionId = new SelectList(_context.Productions, "Id", "Id");
+            ViewBag.CalorifugeageEf = new SelectList(_context.TypeCalorifugeages, "Id", "Nom");
+            ViewBag.CalorifugeageEcs = new SelectList(_context.TypeCalorifugeages, "Id", "Nom");
+            ViewBag.Materiaux = new SelectList(_context.Materiaus, "Id", "Nom");
+
             return View();
         }
 
@@ -59,16 +58,19 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Diagnostique_Realise,Diagnostique_Date,Diagnostique_Intervenant,Interconnexion_Existance,InterconnexionType,CalorifugeageEf,CalorifugeageEcs,ProductionId,DispositifProtectionRetourEau")] Installation installation)
+        public async Task<IActionResult> Create([Bind("Diagnostique_Realise,Diagnostique_Date,Diagnostique_Intervenant,Materiaux,Interconnexion_Existance,InterconnexionType,CalorifugeageEfId,CalorifugeageEcsId,ProductionId,DispositifProtectionRetourEau")] ModelViewInstallation modelViewInstallation)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(installation);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                await _dataInstallation.CreateInstallation(modelViewInstallation);
+                return RedirectToAction("Details");
             }
-            ViewData["ProductionId"] = new SelectList(_context.Productions, "Id", "Id", installation.ProductionId);
-            return View(installation);
+
+            ViewBag.ProductionId = new SelectList(_context.Productions, "Id", "Id", modelViewInstallation.ProductionId);
+            ViewBag.CalorifugeageEcs = new SelectList(_context.TypeCalorifugeages, "Id", "Id", modelViewInstallation.CalorifugeageEcsId);
+            ViewBag.CalorifugeageEf = new SelectList(_context.TypeCalorifugeages, "Id", "Id", modelViewInstallation.CalorifugeageEfId);
+            ViewBag.Materiaux = new SelectList(_context.Materiaus, "Id", "Nom");
+            return View(modelViewInstallation);
         }
 
         // GET: Installations/Edit/5
