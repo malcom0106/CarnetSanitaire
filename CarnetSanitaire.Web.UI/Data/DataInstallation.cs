@@ -30,6 +30,7 @@ namespace CarnetSanitaire.Web.UI.Data
                    .Include(i => i.Diagnostique)
                    .Include(i => i.CalorifugeageEcs)
                    .Include(i => i.CalorifugeageEf)
+                   .Include(i => i.InstallationMateriaus)
                    .FirstOrDefaultAsync(i => i.Id == etablissement.Installation.Id);
                 }
             }
@@ -62,15 +63,21 @@ namespace CarnetSanitaire.Web.UI.Data
 
                     installation.CalorifugeageEcs = typeCalorifugeageEcs;
                     installation.CalorifugeageEf = typeCalorifugeageEfs;
+                    _context.Add(installation);
+                    await _context.SaveChangesAsync();
 
-                    List<InstallationMateriau> installationMateriaux = null;
-                    InstallationMateriau installationMateriau = null;
+                    List<InstallationMateriau> installationMateriaux = new List<InstallationMateriau>();
+                    InstallationMateriau installationMateriau;
+                    
                     foreach (int materiauId in modelView.Materiaux)
                     {
+                        installationMateriau = new InstallationMateriau();
                         installationMateriau.MateriauId = materiauId;
+                        installationMateriau.InstallationId = installation.Id;
+
                         installationMateriaux.Add(installationMateriau);
                     }
-                    installation.InstallationMateiaus = installationMateriaux;
+                    installation.InstallationMateriaus = installationMateriaux;
                     etablissement.Installation = installation;
                     _context.Update(etablissement);
                     await _context.SaveChangesAsync();
@@ -109,12 +116,14 @@ namespace CarnetSanitaire.Web.UI.Data
 
                     foreach (int materiauId in modelView.Materiaux)
                     {
+                        installationMateiau = new InstallationMateriau();
                         installationMateiau.MateriauId = materiauId;
                         installationMateiau.InstallationId = installation.Id;
+
                         mesMateriaux.Add(installationMateiau);
                     }
 
-                    installation.InstallationMateiaus = mesMateriaux;
+                    installation.InstallationMateriaus = mesMateriaux;
 
 
                     _context.Update(installation);
@@ -140,6 +149,7 @@ namespace CarnetSanitaire.Web.UI.Data
                    .Include(i => i.Diagnostique)
                    .Include(i => i.CalorifugeageEcs)
                    .Include(i => i.CalorifugeageEf)
+                   .Include(i => i.InstallationMateriaus)
                    .FirstOrDefaultAsync(i => i.Id == etablissement.Installation.Id);
 
                     modelViewInstallation = new ModelViewInstallation()
@@ -155,7 +165,7 @@ namespace CarnetSanitaire.Web.UI.Data
                     };
 
                     List<int> materiauxId = new List<int>();
-                    foreach (InstallationMateriau materiau in installation.InstallationMateiaus)
+                    foreach (InstallationMateriau materiau in installation.InstallationMateriaus)
                     {
                         materiauxId.Add(materiau.MateriauId);
                     }

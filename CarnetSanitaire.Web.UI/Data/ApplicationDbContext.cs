@@ -63,12 +63,12 @@ namespace CarnetSanitaire.Web.UI.Data
 
             builder.Entity<InstallationMateriau>()
                 .HasOne(im => im.Materiau)
-                .WithMany(im => im.InstallationMateiaus)
+                .WithMany(im => im.InstallationMateriaus)
                 .HasForeignKey(im=>im.MateriauId);
 
             builder.Entity<InstallationMateriau>()
                 .HasOne(im => im.Installation)
-                .WithMany(im => im.InstallationMateiaus)
+                .WithMany(im => im.InstallationMateriaus)
                 .HasForeignKey(im=>im.InstallationId);
 
 

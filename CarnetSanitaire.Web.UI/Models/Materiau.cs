@@ -9,7 +9,7 @@ namespace CarnetSanitaire.Web.UI.Models
     {
         public int Id { get; set; }
         public string Nom { get; set; }
-        public List<InstallationMateriau> InstallationMateiaus { get; set; }
+        public List<InstallationMateriau> InstallationMateriaus { get; set; }
         public bool Statut { get; set; }
     }
 }

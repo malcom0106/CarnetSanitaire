@@ -13,7 +13,7 @@ namespace CarnetSanitaire.Web.UI.Models
         
         #region Reseau
         [Display(Name = "Materiau(x)")]
-        public List<InstallationMateriau> InstallationMateiaus { get; set; }
+        public List<InstallationMateriau> InstallationMateriaus { get; set; }
 
         [Display(Name = "Existe-t-il une interconnexion ?")]
         public bool Interconnexion_Existance { get; set; }
