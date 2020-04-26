@@ -29,6 +29,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             Installation installation;            
             try
             {
+                
                 installation = await _dataInstallation.GetInstallation();
             } 
             catch(Exception ex)

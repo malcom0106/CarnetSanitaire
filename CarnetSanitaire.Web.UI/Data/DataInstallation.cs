@@ -30,7 +30,7 @@ namespace CarnetSanitaire.Web.UI.Data
                    .Include(i => i.Diagnostique)
                    .Include(i => i.CalorifugeageEcs)
                    .Include(i => i.CalorifugeageEf)
-                   .Include(i => i.InstallationMateriaus)
+                   .Include(i => i.InstallationMateriaus).ThenInclude(im => im.Materiau)
                    .FirstOrDefaultAsync(i => i.Id == etablissement.Installation.Id);
                 }
             }

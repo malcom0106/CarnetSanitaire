@@ -26,6 +26,19 @@
         </dd>
 
         <dt class="col-sm-4">
+            Materiaux 
+        </dt>
+        <dd class="col-sm-8">
+            @if(Model.InstallationMateriaus.Count > 0)
+            {
+                foreach(InstallationMateriau installationMateriau in Model.InstallationMateriaus)
+                {
+                    @installationMateriau.Materiau.Nom <br />
+                }
+            }
+        </dd>
+
+        <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.Diagnostique)
         </dt>
         <dd class="col-sm-8">
