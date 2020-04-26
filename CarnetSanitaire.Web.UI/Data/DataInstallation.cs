@@ -27,6 +27,9 @@ namespace CarnetSanitaire.Web.UI.Data
                 {
                     installation = await _context.Installations
                    .Include(i => i.Production)
+                   .Include(i=>i.Diagnostique)
+                   .Include(i=>i.CalorifugeageEcs)
+                   .Include(i=>i.CalorifugeageEf)
                    .FirstOrDefaultAsync(i => i.Id == etablissement.Installation.Id);
                 }                
             }

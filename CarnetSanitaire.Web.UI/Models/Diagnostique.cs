@@ -21,6 +21,7 @@ namespace CarnetSanitaire.Web.UI.Models
         [Display(Name = "Intervenant")]
         public int? Diagnostique_Intervenant { get; set; }
 
+        public int InstallationId { get; set; }
         #endregion
     }
 }

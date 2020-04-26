@@ -10,6 +10,7 @@ namespace CarnetSanitaire.Web.UI.Models
     public class Production
     {
         public int Id { get; set; }
+        public string Identification { get; set; }
         public TypeProduction TypeProduction { get; set; }
         public int NombreBallon { get; set; }
         [Column(TypeName = "decimal(18,1)")]
