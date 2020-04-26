@@ -1,4 +1,4 @@
-﻿@model CarnetSanitaire.Web.UI.Models.Installation
+﻿@model CarnetSanitaire.Web.UI.Models.ModelViewInstallation
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,10 +13,23 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />            
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Materiaux" class="control-label"></label>
+                <select asp-for="Materiaux" class="form-control" asp-items="ViewBag.Materiaux" multiple></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CalorifugeageEfId" class="control-label"></label>
+                <select asp-for="CalorifugeageEfId" class="form-control" asp-items="ViewBag.CalorifugeageEf"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CalorifugeageEcsId" class="control-label"></label>
+                <select asp-for="CalorifugeageEcsId" class="form-control" asp-items="ViewBag.CalorifugeageEcs"></select>
+            </div>
+            <hr />
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Interconnexion_Existance" /> @Html.DisplayNameFor(model => model.Interconnexion_Existance)
+                    @Html.DisplayNameFor(model => model.Interconnexion_Existance) <input class="form-check-input" asp-for="Interconnexion_Existance" />
                 </label>
             </div>
             <div class="form-group">
@@ -24,24 +37,9 @@
                 <input asp-for="InterconnexionType" class="form-control" />
                 <span asp-validation-for="InterconnexionType" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CalorifugeageEf" class="control-label"></label>
-                <input asp-for="CalorifugeageEf" class="form-control" />
-                <span asp-validation-for="CalorifugeageEf" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CalorifugeageEcs" class="control-label"></label>
-                <input asp-for="CalorifugeageEcs" class="form-control" />
-                <span asp-validation-for="CalorifugeageEcs" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProductionId" class="control-label"></label>
-                <select asp-for="ProductionId" class="form-control" asp-items="ViewBag.ProductionId"></select>
-                <span asp-validation-for="ProductionId" class="text-danger"></span>
-            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="DispositifProtectionRetourEau" /> @Html.DisplayNameFor(model => model.DispositifProtectionRetourEau)
+                    @Html.DisplayNameFor(model => model.DispositifProtectionRetourEau) <input class="form-check-input" asp-for="DispositifProtectionRetourEau" />
                 </label>
             </div>
             <div class="form-group">

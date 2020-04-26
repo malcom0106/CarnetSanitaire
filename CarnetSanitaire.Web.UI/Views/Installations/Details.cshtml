@@ -17,12 +17,28 @@
         <dd class="col-sm-8">
             @Html.DisplayFor(model => model.CalorifugeageEf.Nom)
         </dd>
+
         <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.CalorifugeageEcs)
         </dt>
         <dd class="col-sm-8">
             @Html.DisplayFor(model => model.CalorifugeageEcs.Nom)
         </dd>
+
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Diagnostique)
+        </dt>
+        <dd class="col-sm-8">
+            @if (Model.Diagnostique != null && Model.Diagnostique.Count > 0)
+            {
+                @Html.DisplayFor(model => model.Diagnostique.OrderBy(d => d.Diagnostique_Date).First().Diagnostique_Date)
+            }
+            else
+            {
+                <a asp-action="Create" asp-controller="Diagnostiques" asp-route-installationId="@Model.Id" class="btn btn-outline-secondary">Ajouter un diagnostique</a>
+            }
+        </dd>
+
         <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.Production)
         </dt>
@@ -36,15 +52,14 @@
                 @Html.DisplayFor(model => model.Production.Identification)
             }
         </dd>
-        <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.DispositifProtectionRetourEau)
-        </dt>
+
         <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.Interconnexion_Existance)
-        </dt>        
+        </dt>
         <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Interconnexion_Existance)
         </dd>
+
         @if (Model.Interconnexion_Existance)
         {
             <dt class="col-sm-4">
@@ -54,6 +69,10 @@
                 @Html.DisplayFor(model => model.InterconnexionType)
             </dd>
         }
+
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.DispositifProtectionRetourEau)
+        </dt>
         <dd class="col-sm-8">
             @Html.DisplayFor(model => model.DispositifProtectionRetourEau)
         </dd>

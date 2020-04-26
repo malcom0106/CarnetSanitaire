@@ -55,7 +55,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // POST: Installations/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Diagnostique_Realise,Diagnostique_Date,Diagnostique_Intervenant,Materiaux,Interconnexion_Existance,InterconnexionType,CalorifugeageEfId,CalorifugeageEcsId,DispositifProtectionRetourEau")] ModelViewInstallation modelViewInstallation)
+        public async Task<IActionResult> Create([Bind("Materiaux,Interconnexion_Existance,InterconnexionType,CalorifugeageEfId,CalorifugeageEcsId,DispositifProtectionRetourEau")] ModelViewInstallation modelViewInstallation)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +82,9 @@ namespace CarnetSanitaire.Web.UI.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProductionId"] = new SelectList(_context.Productions, "Id", "Id", installation.ProductionId);
+            ViewBag.CalorifugeageEf = new SelectList(_context.TypeCalorifugeages, "Id", "Nom");
+            ViewBag.CalorifugeageEcs = new SelectList(_context.TypeCalorifugeages, "Id", "Nom");
+            ViewBag.Materiaux = new SelectList(_context.Materiaus, "Id", "Nom");
             return View(installation);
         }
 
@@ -91,9 +93,9 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Diagnostique_Realise,Diagnostique_Date,Diagnostique_Intervenant,Interconnexion_Existance,InterconnexionType,CalorifugeageEf,CalorifugeageEcs,ProductionId,DispositifProtectionRetourEau")] Installation installation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Materiaux,Interconnexion_Existance,InterconnexionType,CalorifugeageEfId,CalorifugeageEcsId,DispositifProtectionRetourEau")] ModelViewInstallation modelViewInstallation)
         {
-            if (id != installation.Id)
+            if (id != modelViewInstallation.Id)
             {
                 return NotFound();
             }
@@ -102,12 +104,12 @@ namespace CarnetSanitaire.Web.UI.Controllers
             {
                 try
                 {
-                    _context.Update(installation);
+                    _context.Update(modelViewInstallation);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!InstallationExists(installation.Id))
+                    if (!InstallationExists(modelViewInstallation.Id))
                     {
                         return NotFound();
                     }
@@ -118,8 +120,10 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductionId"] = new SelectList(_context.Productions, "Id", "Id", installation.ProductionId);
-            return View(installation);
+            ViewBag.CalorifugeageEf = new SelectList(_context.TypeCalorifugeages, "Id", "Nom", modelViewInstallation.CalorifugeageEfId);
+            ViewBag.CalorifugeageEcs = new SelectList(_context.TypeCalorifugeages, "Id", "Nom", modelViewInstallation.CalorifugeageEcsId);
+            ViewBag.Materiaux = new SelectList(_context.Materiaus, "Id", "Nom",modelViewInstallation.Materiaux);
+            return View(modelViewInstallation);
         }       
 
         private bool InstallationExists(int id)
