@@ -96,9 +96,15 @@ namespace CarnetSanitaire.Web.UI.Data
             try
             {
                 Etablissement etablissement = await this.GetEtablissementByUser();
-                if (etablissement.Installation != null)
+                if (etablissement.Installation != null && etablissement.Installation.Id == modelView.Id)
                 {
-                    installation = await _context.Installations.FindAsync(etablissement.Installation.Id);
+                    installation = await _context.Installations
+                   .Include(i => i.Production)
+                   .Include(i => i.Diagnostique)
+                   .Include(i => i.CalorifugeageEcs)
+                   .Include(i => i.CalorifugeageEf)
+                   .Include(i => i.InstallationMateriaus)
+                   .FirstOrDefaultAsync(i => i.Id == etablissement.Installation.Id);
 
                     installation.Interconnexion_Existance = modelView.Interconnexion_Existance;
                     installation.InterconnexionType = modelView.InterconnexionType;
