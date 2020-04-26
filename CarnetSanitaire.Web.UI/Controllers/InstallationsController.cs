@@ -14,11 +14,13 @@ namespace CarnetSanitaire.Web.UI.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly DataInstallation _dataInstallation;
+        private readonly DataPoco _dataPoco;
 
-        public InstallationsController(ApplicationDbContext context, DataInstallation dataInstallation)
+        public InstallationsController(ApplicationDbContext context, DataInstallation dataInstallation, DataPoco dataPoco)
         {
             _context = context;
             _dataInstallation = dataInstallation;
+            _dataPoco = dataPoco;
         }
 
         // GET: Installations/Details/5
@@ -43,11 +45,11 @@ namespace CarnetSanitaire.Web.UI.Controllers
         }
 
         // GET: Installations/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewBag.CalorifugeageEf = new SelectList(_context.TypeCalorifugeages, "Id", "Nom");
-            ViewBag.CalorifugeageEcs = new SelectList(_context.TypeCalorifugeages, "Id", "Nom");
-            ViewBag.Materiaux = new SelectList(_context.Materiaus, "Id", "Nom");
+            ViewBag.CalorifugeageEf = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
+            ViewBag.CalorifugeageEcs = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
+            ViewBag.Materiaux = new SelectList(await _dataPoco.GetMateriaux(), "Id", "Nom");
 
             return View();
         }
@@ -63,49 +65,34 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 return RedirectToAction("Details");
             }
 
-            ViewBag.CalorifugeageEcs = new SelectList(_context.TypeCalorifugeages, "Id", "Id", modelViewInstallation.CalorifugeageEcsId);
-            ViewBag.CalorifugeageEf = new SelectList(_context.TypeCalorifugeages, "Id", "Id", modelViewInstallation.CalorifugeageEfId);
-            ViewBag.Materiaux = new SelectList(_context.Materiaus, "Id", "Nom");
+            ViewBag.CalorifugeageEf = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom", modelViewInstallation.CalorifugeageEcsId);
+            ViewBag.CalorifugeageEcs = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom", modelViewInstallation.CalorifugeageEfId);
+            ViewBag.Materiaux = new SelectList(await _dataPoco.GetMateriaux(), "Id", "Nom");
+
             return View(modelViewInstallation);
         }
 
         // GET: Installations/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var installation = await _context.Installations.FindAsync(id);
-            if (installation == null)
-            {
-                return NotFound();
-            }
-            ViewBag.CalorifugeageEf = new SelectList(_context.TypeCalorifugeages, "Id", "Nom");
-            ViewBag.CalorifugeageEcs = new SelectList(_context.TypeCalorifugeages, "Id", "Nom");
-            ViewBag.Materiaux = new SelectList(_context.Materiaus, "Id", "Nom");
+            var installation = await _dataInstallation.GetInstallationByModelView();
+            
+            ViewBag.CalorifugeageEf = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
+            ViewBag.CalorifugeageEcs = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
+            ViewBag.Materiaux = new SelectList(await _dataPoco.GetMateriaux(), "Id", "Nom");
             return View(installation);
         }
 
         // POST: Installations/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Materiaux,Interconnexion_Existance,InterconnexionType,CalorifugeageEfId,CalorifugeageEcsId,DispositifProtectionRetourEau")] ModelViewInstallation modelViewInstallation)
+        public async Task<IActionResult> Edit([Bind("Id,Materiaux,Interconnexion_Existance,InterconnexionType,CalorifugeageEfId,CalorifugeageEcsId,DispositifProtectionRetourEau")] ModelViewInstallation modelViewInstallation)
         {
-            if (id != modelViewInstallation.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(modelViewInstallation);
-                    await _context.SaveChangesAsync();
+                    await _dataInstallation.EditInstallation(modelViewInstallation);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,11 +105,13 @@ namespace CarnetSanitaire.Web.UI.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details");
             }
-            ViewBag.CalorifugeageEf = new SelectList(_context.TypeCalorifugeages, "Id", "Nom", modelViewInstallation.CalorifugeageEfId);
-            ViewBag.CalorifugeageEcs = new SelectList(_context.TypeCalorifugeages, "Id", "Nom", modelViewInstallation.CalorifugeageEcsId);
-            ViewBag.Materiaux = new SelectList(_context.Materiaus, "Id", "Nom",modelViewInstallation.Materiaux);
+
+            ViewBag.CalorifugeageEf = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom", modelViewInstallation.CalorifugeageEfId);
+            ViewBag.CalorifugeageEcs = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom", modelViewInstallation.CalorifugeageEcsId);
+            ViewBag.Materiaux = new SelectList(await _dataPoco.GetMateriaux(), "Id", "Nom");
+
             return View(modelViewInstallation);
         }       
 

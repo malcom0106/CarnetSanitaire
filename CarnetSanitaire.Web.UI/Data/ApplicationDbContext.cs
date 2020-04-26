@@ -49,11 +49,28 @@ namespace CarnetSanitaire.Web.UI.Data
         
         //DbSet Table Intermediare
         public DbSet<SocieteDomaine> SocieteDomaines { get; set; }
+        public DbSet<InstallationMateriau> InstallationMateiaus { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            //Relation N-N avec tables intermediare Installation et Materiaux
+
+            builder.Entity<InstallationMateriau>()
+                .HasKey(im => new { im.MateriauId, im.InstallationId });
+
+            builder.Entity<InstallationMateriau>()
+                .HasOne(im => im.Materiau)
+                .WithMany(im => im.InstallationMateiaus)
+                .HasForeignKey(im=>im.MateriauId);
+
+            builder.Entity<InstallationMateriau>()
+                .HasOne(im => im.Installation)
+                .WithMany(im => im.InstallationMateiaus)
+                .HasForeignKey(im=>im.InstallationId);
+
 
             //Relation N-N avec tables intermediare Societes et Domaines
             builder.Entity<SocieteDomaine>()

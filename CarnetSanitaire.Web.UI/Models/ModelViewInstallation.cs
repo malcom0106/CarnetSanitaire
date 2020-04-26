@@ -12,7 +12,7 @@ namespace CarnetSanitaire.Web.UI.Models
     {
         public int Id { get; set; }
         #region Diag
-        public Diagnostique Diagnostique { get; set; }
+        public List<Diagnostique> Diagnostiques { get; set; }
 
         #endregion
         #region Reseau
@@ -31,8 +31,6 @@ namespace CarnetSanitaire.Web.UI.Models
         [Display(Name = "Calorifugeage ECS")]
         public int? CalorifugeageEcsId { get; set; }
 
-        [Display(Name = "Type de Reseau")]
-        public TypeReseau TypeReseau { get; set; }
         #endregion
 
         #region Traitement
