@@ -10,18 +10,7 @@ namespace CarnetSanitaire.Web.UI.Models
     public class Installation
     {
         public int Id { get; set; }
-        #region Diag
-        [Display(Name ="Diagnostique Réalisé")]
-        public bool Diagnostique_Realise { get; set; }
-
-        [DataType(DataType.Date)]
-        [Display(Name = "Date du Diagnostique")]
-        public DateTime? Diagnostique_Date { get; set; }
-
-        [Display(Name = "Intervenant")]
-        public int? Diagnostique_Intervenant { get; set; }
-
-        #endregion
+        
         #region Reseau
         [Display(Name = "Materiau(x)")]
         public List<Materiau> Materiaux { get; set; }
@@ -37,9 +26,6 @@ namespace CarnetSanitaire.Web.UI.Models
 
         [Display(Name = "Calorifugeage ECS")]
         public TypeCalorifugeage CalorifugeageEcs { get; set; }
-
-        [Display(Name = "Type de Reseau")]
-        public TypeReseau TypeReseau { get; set; }
         #endregion
 
         #region Production
@@ -53,9 +39,11 @@ namespace CarnetSanitaire.Web.UI.Models
         [Display(Name = "Traitement mise en place")]
         public List<Traitement> Traitements { get; set; }
 
-        [Display(Name = "Dispositif de Protection contre les retours d'eau ")]
-        #endregion
+        [Display(Name = "Dispositif de Protection contre les retours d'eau ")]        
         public bool DispositifProtectionRetourEau { get; set; }
-
+        #endregion
+        #region Diagnostique
+        public Diagnostique Diagnostique { get; set; }
+        #endregion
     }
 }

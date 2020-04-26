@@ -45,7 +45,6 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // GET: Installations/Create
         public IActionResult Create()
         {
-            ViewBag.ProductionId = new SelectList(_context.Productions, "Id", "Id");
             ViewBag.CalorifugeageEf = new SelectList(_context.TypeCalorifugeages, "Id", "Nom");
             ViewBag.CalorifugeageEcs = new SelectList(_context.TypeCalorifugeages, "Id", "Nom");
             ViewBag.Materiaux = new SelectList(_context.Materiaus, "Id", "Nom");
@@ -54,11 +53,9 @@ namespace CarnetSanitaire.Web.UI.Controllers
         }
 
         // POST: Installations/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Diagnostique_Realise,Diagnostique_Date,Diagnostique_Intervenant,Materiaux,Interconnexion_Existance,InterconnexionType,CalorifugeageEfId,CalorifugeageEcsId,ProductionId,DispositifProtectionRetourEau")] ModelViewInstallation modelViewInstallation)
+        public async Task<IActionResult> Create([Bind("Diagnostique_Realise,Diagnostique_Date,Diagnostique_Intervenant,Materiaux,Interconnexion_Existance,InterconnexionType,CalorifugeageEfId,CalorifugeageEcsId,DispositifProtectionRetourEau")] ModelViewInstallation modelViewInstallation)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +63,6 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 return RedirectToAction("Details");
             }
 
-            ViewBag.ProductionId = new SelectList(_context.Productions, "Id", "Id", modelViewInstallation.ProductionId);
             ViewBag.CalorifugeageEcs = new SelectList(_context.TypeCalorifugeages, "Id", "Id", modelViewInstallation.CalorifugeageEcsId);
             ViewBag.CalorifugeageEf = new SelectList(_context.TypeCalorifugeages, "Id", "Id", modelViewInstallation.CalorifugeageEfId);
             ViewBag.Materiaux = new SelectList(_context.Materiaus, "Id", "Nom");

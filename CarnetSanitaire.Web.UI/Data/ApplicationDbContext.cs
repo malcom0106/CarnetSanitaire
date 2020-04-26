@@ -44,6 +44,7 @@ namespace CarnetSanitaire.Web.UI.Data
         public DbSet<Analyse> Analyses { get; set; }
         public DbSet<ParametreAnalyse> ParametreAnalyses { get; set; }
         public DbSet<TypeCalorifugeage> TypeCalorifugeages { get; set; }
+        public DbSet<Diagnostique> Diagnostiques { get; set; }
 
         
         //DbSet Table Intermediare

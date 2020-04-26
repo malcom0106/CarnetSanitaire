@@ -47,10 +47,7 @@ namespace CarnetSanitaire.Web.UI.Data
                 Etablissement etablissement = await this.GetEtablissementByUser();
                 if (etablissement.Installation == null)
                 {
-                    installation = new Installation() {                        
-                        Diagnostique_Realise = modelView.Diagnostique_Realise,
-                        Diagnostique_Date = modelView.Diagnostique_Date,
-                        Diagnostique_Intervenant = modelView.Diagnostique_Intervenant,
+                    installation = new Installation() {
                         Interconnexion_Existance = modelView.Interconnexion_Existance,
                         InterconnexionType = modelView.InterconnexionType,
                         DispositifProtectionRetourEau = modelView.DispositifProtectionRetourEau
