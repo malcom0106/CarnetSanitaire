@@ -12,21 +12,21 @@ namespace CarnetSanitaire.Web.UI.Controllers
 {
     public class InstallationsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        #region Global et Constructeur
         private readonly DataInstallation _dataInstallation;
         private readonly DataPoco _dataPoco;
 
-        public InstallationsController(ApplicationDbContext context, DataInstallation dataInstallation, DataPoco dataPoco)
+        public InstallationsController(DataInstallation dataInstallation, DataPoco dataPoco)
         {
-            _context = context;
             _dataInstallation = dataInstallation;
             _dataPoco = dataPoco;
         }
+        #endregion
 
         // GET: Installations/Details/5
         public async Task<IActionResult> Details()
         {
-            Installation installation;            
+            Installation installation = null;            
             try
             {
                 
@@ -34,7 +34,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             } 
             catch(Exception ex)
             {
-                throw ex;                
+                await _dataInstallation.AddLogErreur(ex);                
             }
             
             if (installation == null)
@@ -48,9 +48,20 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // GET: Installations/Create
         public async Task<IActionResult> Create()
         {
-            ViewBag.CalorifugeageEf = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
-            ViewBag.CalorifugeageEcs = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
-            ViewBag.Materiaux = new SelectList(await _dataPoco.GetMateriaux(), "Id", "Nom");
+            try
+            {
+                ViewBag.CalorifugeageEf = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
+                ViewBag.CalorifugeageEcs = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
+                ViewBag.Materiaux = new SelectList(await _dataPoco.GetMateriaux(), "Id", "Nom");
+            }
+            catch(Exception ex)
+            {
+                ViewBag.CalorifugeageEf = null;
+                ViewBag.CalorifugeageEcs = null;
+                ViewBag.Materiaux = null;
+
+                await _dataInstallation.AddLogErreur(ex);
+            }
 
             return View();
         }
@@ -60,15 +71,26 @@ namespace CarnetSanitaire.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Materiaux,Interconnexion_Existance,InterconnexionType,CalorifugeageEfId,CalorifugeageEcsId,DispositifProtectionRetourEau")] ModelViewInstallation modelViewInstallation)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await _dataInstallation.CreateInstallation(modelViewInstallation);
-                return RedirectToAction("Details");
-            }
+                if (ModelState.IsValid)
+                {
+                    await _dataInstallation.CreateInstallation(modelViewInstallation);
+                    return RedirectToAction("Details");
+                }
 
-            ViewBag.CalorifugeageEf = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom", modelViewInstallation.CalorifugeageEcsId);
-            ViewBag.CalorifugeageEcs = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom", modelViewInstallation.CalorifugeageEfId);
-            ViewBag.Materiaux = new SelectList(await _dataPoco.GetMateriaux(), "Id", "Nom");
+                ViewBag.CalorifugeageEf = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom", modelViewInstallation.CalorifugeageEcsId);
+                ViewBag.CalorifugeageEcs = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom", modelViewInstallation.CalorifugeageEfId);
+                ViewBag.Materiaux = new SelectList(await _dataPoco.GetMateriaux(), "Id", "Nom");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.CalorifugeageEf = null;
+                ViewBag.CalorifugeageEcs = null;
+                ViewBag.Materiaux = null;
+
+                await _dataInstallation.AddLogErreur(ex);
+            }
 
             return View(modelViewInstallation);
         }
@@ -76,11 +98,25 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // GET: Installations/Edit/5
         public async Task<IActionResult> Edit()
         {
-            var installation = await _dataInstallation.GetInstallationByModelView();
+            ModelViewInstallation installation = null;
+            try
+            {
+                installation = await _dataInstallation.GetInstallationByModelView();
+
+                ViewBag.CalorifugeageEf = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
+                ViewBag.CalorifugeageEcs = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
+                ViewBag.Materiaux = new SelectList(await _dataPoco.GetMateriaux(), "Id", "Nom");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.CalorifugeageEf = null;
+                ViewBag.CalorifugeageEcs = null;
+                ViewBag.Materiaux = null;
+
+                await _dataInstallation.AddLogErreur(ex);
+            }
+
             
-            ViewBag.CalorifugeageEf = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
-            ViewBag.CalorifugeageEcs = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
-            ViewBag.Materiaux = new SelectList(await _dataPoco.GetMateriaux(), "Id", "Nom");
             return View(installation);
         }
 
@@ -94,31 +130,32 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 try
                 {
                     await _dataInstallation.EditInstallation(modelViewInstallation);
+
+                    ViewBag.CalorifugeageEf = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
+                    ViewBag.CalorifugeageEcs = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
+                    ViewBag.Materiaux = new SelectList(await _dataPoco.GetMateriaux(), "Id", "Nom");
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
-                    if (!InstallationExists(modelViewInstallation.Id))
+                    if (!_dataInstallation.InstallationExists(modelViewInstallation.Id))
                     {
                         return NotFound();
                     }
                     else
                     {
-                        throw;
+                        ViewBag.CalorifugeageEf = null;
+                        ViewBag.CalorifugeageEcs = null;
+                        ViewBag.Materiaux = null;
+
+                        await _dataInstallation.AddLogErreur(ex);
                     }
                 }
                 return RedirectToAction("Details");
             }
 
-            ViewBag.CalorifugeageEf = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
-            ViewBag.CalorifugeageEcs = new SelectList(await _dataPoco.GetTypeCalorifugeage(), "Id", "Nom");
-            ViewBag.Materiaux = new SelectList(await _dataPoco.GetMateriaux(), "Id", "Nom");
-
             return View(modelViewInstallation);
         }       
 
-        private bool InstallationExists(int id)
-        {
-            return _context.Installations.Any(e => e.Id == id);
-        }
+        
     }
 }

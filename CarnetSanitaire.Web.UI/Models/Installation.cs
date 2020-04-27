@@ -43,7 +43,7 @@ namespace CarnetSanitaire.Web.UI.Models
         public bool DispositifProtectionRetourEau { get; set; }
         #endregion
         #region Diagnostique
-        public List<Diagnostique> Diagnostique { get; set; }
+        public List<Diagnostique> Diagnostiques { get; set; }
         #endregion
     }
 }
