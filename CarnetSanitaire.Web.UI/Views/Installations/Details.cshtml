@@ -43,8 +43,8 @@
         </dt>
         <dd class="col-sm-8">
             @if (Model.Diagnostique != null && Model.Diagnostique.Count > 0)
-            {
-                @Html.DisplayFor(model => model.Diagnostique.OrderBy(d => d.Diagnostique_Date).First().Diagnostique_Date)
+            {                
+                <a asp-action="Index" asp-controller="Diagnostiques" asp-route-installationId="@Model.Id" class="btn btn-outline-secondary">Voir les diagnostiques</a>
             }
             else
             {
@@ -62,7 +62,7 @@
             }
             else
             {
-                @Html.DisplayFor(model => model.Production.Identification)
+                <a asp-action="Index" asp-controller="Productions" asp-route-installationId="@Model.Id" class="btn btn-outline-secondary">Voir la Production</a>
             }
         </dd>
 
