@@ -12,29 +12,58 @@ namespace CarnetSanitaire.Web.UI.Controllers
 {
     public class DiagnostiquesController : Controller
     {
+        #region Global et Constructeur
         private readonly ApplicationDbContext _context;
+        private readonly DataDiagnostique _dataDiagnostique;
 
-        public DiagnostiquesController(ApplicationDbContext context)
+        public DiagnostiquesController(ApplicationDbContext context, DataDiagnostique dataDiagnostique)
         {
             _context = context;
+            _dataDiagnostique = dataDiagnostique;
         }
+        #endregion
 
         // GET: Diagnostiques
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? installationId)
         {
-            return View(await _context.Diagnostiques.ToListAsync());
+            List<Diagnostique> diagnostiques = null;
+            if(installationId == null)
+            {
+                return NotFound();
+            }
+            if (!await _dataDiagnostique.VerifyInstallationUser((int)installationId))
+            {
+                return NotFound();
+            }
+            try
+            {
+                diagnostiques = await _dataDiagnostique.GetDiagnostiques((int)installationId);
+            }
+            catch(Exception ex)
+            {
+                await _dataDiagnostique.AddLogErreur(ex);
+            }
+            ViewBag.installationId = installationId;
+            return View(diagnostiques);
         }
 
         // GET: Diagnostiques/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            Diagnostique diagnostique = null;
             if (id == null)
             {
                 return NotFound();
             }
-
-            var diagnostique = await _context.Diagnostiques
-                .FirstOrDefaultAsync(m => m.Id == id);
+            try
+            {
+                diagnostique = await _dataDiagnostique.GetDiagnostiqueById((int)id);
+            }
+            catch (Exception ex)
+            {
+                await _dataDiagnostique.AddLogErreur(ex);
+            }
+            
             if (diagnostique == null)
             {
                 return NotFound();
@@ -44,24 +73,40 @@ namespace CarnetSanitaire.Web.UI.Controllers
         }
 
         // GET: Diagnostiques/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int? installationId)
         {
+            if (installationId == null)
+            {
+                return NotFound();
+            }
+
+            if(! await _dataDiagnostique.VerifyInstallationUser((int)installationId))
+            {
+                return NotFound();
+            }
+
+            ViewBag.installationId = installationId;
             return View();
         }
 
         // POST: Diagnostiques/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Diagnostique_Realise,Diagnostique_Date,Diagnostique_Intervenant,InstallationId")] Diagnostique diagnostique)
+        public async Task<IActionResult> Create([Bind("Id,Diagnostique_Realise,Diagnostique_Date,Diagnostique_Intervenant")] Diagnostique diagnostique)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(diagnostique);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    diagnostique = await _dataDiagnostique.AddDiagnostique(diagnostique);
+                    return RedirectToAction("Index", new { @installationId = diagnostique.InstallationId });
+                }
             }
+            catch (Exception ex)
+            {
+                await _dataDiagnostique.AddLogErreur(ex);
+            }
+            
             return View(diagnostique);
         }
 
@@ -72,8 +117,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             {
                 return NotFound();
             }
-
-            var diagnostique = await _context.Diagnostiques.FindAsync(id);
+            var diagnostique = await _dataDiagnostique.GetDiagnostiqueById((int)id);
             if (diagnostique == null)
             {
                 return NotFound();
@@ -82,33 +126,26 @@ namespace CarnetSanitaire.Web.UI.Controllers
         }
 
         // POST: Diagnostiques/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Diagnostique_Realise,Diagnostique_Date,Diagnostique_Intervenant,InstallationId")] Diagnostique diagnostique)
+        public async Task<IActionResult> Edit([Bind("Id,Diagnostique_Realise,Diagnostique_Date,Diagnostique_Intervenant,InstallationId")] Diagnostique diagnostique)
         {
-            if (id != diagnostique.Id)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(diagnostique);
-                    await _context.SaveChangesAsync();
+                    await _dataDiagnostique.EditDiagnostique(diagnostique);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
-                    if (!DiagnostiqueExists(diagnostique.Id))
+                    if (!_dataDiagnostique.DiagnostiqueExists(diagnostique.Id))
                     {
                         return NotFound();
                     }
                     else
                     {
-                        throw;
+                        await _dataDiagnostique.AddLogErreur(ex);
                     }
                 }
                 return RedirectToAction(nameof(Index));
@@ -116,38 +153,6 @@ namespace CarnetSanitaire.Web.UI.Controllers
             return View(diagnostique);
         }
 
-        // GET: Diagnostiques/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var diagnostique = await _context.Diagnostiques
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (diagnostique == null)
-            {
-                return NotFound();
-            }
-
-            return View(diagnostique);
-        }
-
-        // POST: Diagnostiques/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var diagnostique = await _context.Diagnostiques.FindAsync(id);
-            _context.Diagnostiques.Remove(diagnostique);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool DiagnostiqueExists(int id)
-        {
-            return _context.Diagnostiques.Any(e => e.Id == id);
-        }
+        
     }
 }

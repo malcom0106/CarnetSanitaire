@@ -39,11 +39,11 @@
         </dd>
 
         <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.Diagnostique)
+            @Html.DisplayNameFor(model => model.Diagnostiques)
         </dt>
         <dd class="col-sm-8">
-            @if (Model.Diagnostique != null && Model.Diagnostique.Count > 0)
-            {                
+            @if (Model.Diagnostiques != null && Model.Diagnostiques.Count > 0)
+            {
                 <a asp-action="Index" asp-controller="Diagnostiques" asp-route-installationId="@Model.Id" class="btn btn-outline-secondary">Voir les diagnostiques</a>
             }
             else
