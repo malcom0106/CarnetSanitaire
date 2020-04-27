@@ -186,6 +186,11 @@ namespace CarnetSanitaire.Web.UI.Data
 
             return modelViewInstallation;
         }
+
+        public bool InstallationExists(int id)
+        {
+            return _context.Installations.Any(e => e.Id == id);
+        }
     }
 }
 
