@@ -20,7 +20,7 @@ namespace CarnetSanitaire.Web.UI.Data
             try
             {
                 Etablissement etablissement = await GetEtablissementByUser();
-                if(etablissement.Installation.Id == installationId)
+                if (etablissement.Installation.Id == installationId)
                 {
                     isVerified = true;
                 }
@@ -33,30 +33,29 @@ namespace CarnetSanitaire.Web.UI.Data
             return isVerified;
         }
 
-        public async Task<List<Diagnostique>> GetDiagnostiques(int installationId)
+        public async Task<List<Diagnostique>> GetDiagnostiques()
         {
             List<Diagnostique> diagnostiques = null;
             try
             {
                 Etablissement etablissement = await GetEtablissementByUser();
-                if(etablissement.Installation.Id == installationId)
+
+                Installation installation = await
+                    _context.Installations
+                    .Include(d => d.Diagnostiques)
+                    .Where(d => d.Id == etablissement.Installation.Id)
+                    .FirstOrDefaultAsync();
+                if (installation.Diagnostiques.Count > 0)
                 {
-                    Installation installation = await
-                        _context.Installations
-                        .Include(d => d.Diagnostiques)
-                        .Where(d => d.Id == installationId)
-                        .FirstOrDefaultAsync();
-                    if(installation.Diagnostiques.Count > 0)
-                    {
-                        diagnostiques = installation.Diagnostiques;
-                    }
-                    else
-                    {
-                        diagnostiques = new List<Diagnostique>();
-                    }
+                    diagnostiques = installation.Diagnostiques;
                 }
+                else
+                {
+                    diagnostiques = new List<Diagnostique>();
+                }
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -70,12 +69,12 @@ namespace CarnetSanitaire.Web.UI.Data
             {
                 Etablissement etablissement = await GetEtablissementByUser();
                 Diagnostique diagnostiqueVerif = await _context.Diagnostiques.FindAsync(diagnostiqueId);
-                if(diagnostiqueVerif.InstallationId == etablissement.Installation.Id)
+                if (diagnostiqueVerif.InstallationId == etablissement.Installation.Id)
                 {
                     diagnostique = diagnostiqueVerif;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -100,18 +99,16 @@ namespace CarnetSanitaire.Web.UI.Data
             return diagnostique;
         }
 
-
-
         public async Task<Diagnostique> EditDiagnostique(Diagnostique diagnostique)
         {
             try
             {
                 Etablissement etablissement = await GetEtablissementByUser();
-                if(diagnostique.InstallationId == etablissement.Installation.Id)
+                if (diagnostique.InstallationId == etablissement.Installation.Id)
                 {
                     _context.Diagnostiques.Update(diagnostique);
                     await _context.SaveChangesAsync();
-                }                
+                }
             }
             catch (Exception ex)
             {

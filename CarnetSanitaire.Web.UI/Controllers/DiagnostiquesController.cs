@@ -24,26 +24,17 @@ namespace CarnetSanitaire.Web.UI.Controllers
         #endregion
 
         // GET: Diagnostiques
-        public async Task<IActionResult> Index(int? installationId)
+        public async Task<IActionResult> Index()
         {
             List<Diagnostique> diagnostiques = null;
-            if(installationId == null)
-            {
-                return NotFound();
-            }
-            if (!await _dataDiagnostique.VerifyInstallationUser((int)installationId))
-            {
-                return NotFound();
-            }
             try
             {
-                diagnostiques = await _dataDiagnostique.GetDiagnostiques((int)installationId);
+                diagnostiques = await _dataDiagnostique.GetDiagnostiques();
             }
             catch(Exception ex)
             {
                 await _dataDiagnostique.AddLogErreur(ex);
             }
-            ViewBag.installationId = installationId;
             return View(diagnostiques);
         }
 
@@ -73,19 +64,8 @@ namespace CarnetSanitaire.Web.UI.Controllers
         }
 
         // GET: Diagnostiques/Create
-        public async Task<IActionResult> Create(int? installationId)
+        public IActionResult Create()
         {
-            if (installationId == null)
-            {
-                return NotFound();
-            }
-
-            if(! await _dataDiagnostique.VerifyInstallationUser((int)installationId))
-            {
-                return NotFound();
-            }
-
-            ViewBag.installationId = installationId;
             return View();
         }
 

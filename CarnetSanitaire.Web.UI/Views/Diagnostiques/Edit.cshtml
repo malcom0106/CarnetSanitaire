@@ -14,7 +14,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="InstallationId" value="@ViewBag.InstallationId"/>
+            <input type="hidden" asp-for="InstallationId"/>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Diagnostique_Realise" /> @Html.DisplayNameFor(model => model.Diagnostique_Realise)
