@@ -29,7 +29,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             Production production = null;
             try
             {
-                await _dataProduction.GetProduction();
+                production = await _dataProduction.GetProduction();
             }
             catch (Exception ex)
             {
@@ -37,7 +37,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             }
             if (production == null)
             {
-                return RedirectToAction("Details", "Productions");
+                return RedirectToAction("Create", "Productions");
             }
 
             return View(production);

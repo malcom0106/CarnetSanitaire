@@ -42,7 +42,10 @@ namespace CarnetSanitaire.Web.UI.Data
             try
             {
                 Etablissement etablissement = await GetEtablissementByUser();
-                production = await _context.Productions.Where(p => p.InstallationId == etablissement.Installation.Id).FirstOrDefaultAsync();                
+                production = await _context.Productions
+                    .Include(p => p.TypeProduction)
+                    .Include(p => p.TypeReseau)
+                    .Where(p => p.InstallationId == etablissement.Installation.Id).FirstOrDefaultAsync();                
             }
             catch(Exception ex)
             {
