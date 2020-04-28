@@ -1,0 +1,55 @@
+﻿@model CarnetSanitaire.Web.UI.Models.Production
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Production</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Identification)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Identification)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.NombreBallon)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.NombreBallon)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.TemperatureDepartEcs)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.TemperatureDepartEcs)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.TemperatureBouclageEcs)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.TemperatureBouclageEcs)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.TypeReseau)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.TypeReseau.Nom)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.TypeProduction)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.TypeProduction.Nom)
+        </dd>
+    </dl>
+</div>
+<div class="row col-12">
+    <a asp-action="Edit" class="btn btn-outline-primary col-6">Modifier</a>
+    <a asp-action="Details" asp-controller="Installations" class="btn btn-outline-danger col-6">Retour</a>
+</div>

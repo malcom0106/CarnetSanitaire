@@ -89,6 +89,7 @@ namespace CarnetSanitaire.Web.UI
             services.AddTransient<Data.DataInstallation>();
             services.AddTransient<Data.DataPoco>();
             services.AddTransient<Data.DataDiagnostique>();
+            services.AddTransient<Data.DataProduction>();
 
             services.AddTransient<IEmailSender, EmailSender>();
 

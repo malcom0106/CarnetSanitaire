@@ -58,11 +58,11 @@
         <dd class="col-sm-8">
             @if (Model.Production == null)
             {
-                <a asp-action="Create" asp-controller="Productions" asp-route-installationId="@Model.Id" class="btn btn-outline-secondary">Ajouter la production</a>
+                <a asp-action="Create" asp-controller="Productions" class="btn btn-outline-secondary">Ajouter la production</a>
             }
             else
             {
-                <a asp-action="Index" asp-controller="Productions" asp-route-installationId="@Model.Id" class="btn btn-outline-secondary">Voir la Production</a>
+                <a asp-action="Details" asp-controller="Productions" class="btn btn-outline-secondary">Voir la Production</a>
             }
         </dd>
 
