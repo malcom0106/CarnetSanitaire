@@ -39,7 +39,7 @@ namespace CarnetSanitaire.Web.UI.Data
                     .Include(e => e.Coordonnee)
                     .Include(e => e.ReleveTemperatures)
                     .Include(e => e.CampagneAnalyses)
-                    .Include(e => e.Installation)
+                    .Include(e => e.Installation).ThenInclude(i => i.Production)
                     .Include(e => e.Interventions)
                     .Where(e => e.Id == user.Etablissement.Id)
                     .FirstOrDefaultAsync();

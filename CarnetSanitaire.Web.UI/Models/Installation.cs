@@ -29,9 +29,6 @@ namespace CarnetSanitaire.Web.UI.Models
         #endregion
 
         #region Production
-        [Display(Name = "Production")]
-        public int? ProductionId { get; set; }
-        [ForeignKey("ProductionId")]
         public Production Production { get; set; }
         #endregion
 

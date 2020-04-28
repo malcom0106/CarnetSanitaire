@@ -1,0 +1,43 @@
+﻿@model CarnetSanitaire.Web.UI.Models.Production
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Production</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Identification)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Identification)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NombreBallon)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NombreBallon)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TemperatureDepartEcs)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TemperatureDepartEcs)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TemperatureBouclageEcs)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TemperatureBouclageEcs)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
