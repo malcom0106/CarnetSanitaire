@@ -54,6 +54,36 @@ namespace CarnetSanitaire.Web.UI.Data
             return production;
         }
 
+        public async Task<ModelViewProduction> GetProductionModelView()
+        {
+            ModelViewProduction modelViewProduction = null;
+            try
+            {
+                Etablissement etablissement = await GetEtablissementByUser();
+                Production production = await _context.Productions
+                    .Include(p => p.TypeProduction)
+                    .Include(p => p.TypeReseau)
+                    .Where(p => p.InstallationId == etablissement.Installation.Id).FirstOrDefaultAsync();
+
+                modelViewProduction = new ModelViewProduction()
+                {
+                    Id = production.Id,
+                    Identification = production.Identification,
+                    InstallationId = production.InstallationId,
+                    NombreBallon = production.NombreBallon,
+                    TemperatureBouclageEcs = production.TemperatureBouclageEcs,
+                    TemperatureDepartEcs = production.TemperatureDepartEcs,
+                    TypeProductionId = production.TypeProduction.Id,
+                    TypeReseauId = production.TypeReseau.Id
+                };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return modelViewProduction;
+        }
+
         public async Task<Production> AddProduction(ModelViewProduction modelViewProduction)
         {
             Production production = null;
