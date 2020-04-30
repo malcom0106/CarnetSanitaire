@@ -26,8 +26,9 @@ namespace CarnetSanitaire.Web.UI.Models
 
         public ICollection<Societe> Societes { get; set; }
 
-        public ICollection<Intervention> Interventions { get; set; } 
-        public ICollection<ReleveTemperature> ReleveTemperatures { get; set; }
+
+        public ICollection<Intervention> Interventions { get; set; }
+        public ICollection<PointReleveTemperature> PointReleveTemperatures { get; set; }
 
         public Installation Installation { get; set; }
         public List<CampagneAnalyse> CampagneAnalyses { get; set; }

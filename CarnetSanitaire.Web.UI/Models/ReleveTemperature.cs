@@ -14,6 +14,7 @@ namespace CarnetSanitaire.Web.UI.Models
         public PointReleveTemperature PointReleveTemperature { get; set; }
         [Column(TypeName = "decimal(18,1)")]
         public decimal Temperature { get; set; }
-        public Etablissement Etablissement { get; set; }
+        public bool Statut { get; set; }
+        public String LogStatut { get; set; }
     }
 }
