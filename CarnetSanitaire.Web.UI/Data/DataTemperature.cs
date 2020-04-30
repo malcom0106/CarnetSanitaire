@@ -29,6 +29,21 @@ namespace CarnetSanitaire.Web.UI.Data
             return PointReleveTemperatures;
         }
 
+        public async Task<PointReleveTemperature> GetPointReleveTemperatureById(int Id)
+        {
+            PointReleveTemperature PointReleveTemperature;
+            try
+            {
+                Etablissement etablissement = await GetEtablissementByUser();
+                PointReleveTemperature = etablissement.PointReleveTemperatures.Where(p => p.Id == Id).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return PointReleveTemperature;
+        }
+
         public async Task<bool> AddPointReleveTemperature(PointReleveTemperature pointReleveTemperature)
         {
             bool isCreated;
@@ -42,7 +57,7 @@ namespace CarnetSanitaire.Web.UI.Data
             }
             catch (Exception ex)
             {
-                isCreated = false
+                isCreated = false;
                 throw ex;
 
             }
@@ -55,9 +70,9 @@ namespace CarnetSanitaire.Web.UI.Data
             try
             {
                 Etablissement etablissement = await GetEtablissementByUser();
-                if(pointReleveTemperature.Etablissement.Id == etablissement.Id)
+                if(pointReleveTemperature.EtablissementId == etablissement.Id)
                 {
-
+                    _context.Update(pointReleveTemperature);
                     await _context.SaveChangesAsync();
                     IsEdited = true;
                 }

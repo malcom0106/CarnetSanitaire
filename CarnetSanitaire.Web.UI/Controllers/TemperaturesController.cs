@@ -16,12 +16,12 @@ namespace CarnetSanitaire.Web.UI.Controllers
     {
         #region Constructeur + Global
 
-        private readonly ApplicationDbContext _context;
+        private readonly DataPoco _dataPoco;
         private readonly DataTemperature _dataTemperature;
 
-        public TemperaturesController(ApplicationDbContext context, DataTemperature dataTemperature)
+        public TemperaturesController(DataTemperature dataTemperature, DataPoco dataPoco)
         {
-            _context = context;
+            _dataPoco = dataPoco;
             _dataTemperature = dataTemperature;
         }
         #endregion
@@ -55,8 +55,8 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 return NotFound();
             }
 
-            var pointReleveTemperature = await _context.PointReleveTemperatures
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var pointReleveTemperature = await _dataTemperature.GetPointReleveTemperatureById((int)id);
+
             if (pointReleveTemperature == null)
             {
                 return NotFound();
@@ -70,9 +70,9 @@ namespace CarnetSanitaire.Web.UI.Controllers
         #region CreatePoint
 
         // GET: Temperatures/Create
-        public IActionResult CreatePoint()
+        public async Task<IActionResult> CreatePoint()
         {
-            ViewBag.TypePoint = new SelectList(_context.TypePoints, "Id", "Nom");
+            ViewBag.TypePoint = new SelectList(await _dataPoco.GetTypePoint(), "Id", "Nom");
             return View();
         }
 
@@ -90,7 +90,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 }
                 return RedirectToAction("IndexPoints");
             }
-            ViewBag.TypePoint = new SelectList(_context.TypePoints, "Id", "Nom");
+            ViewBag.TypePoint = new SelectList(await _dataPoco.GetTypePoint(), "Id", "Nom");
             return View(pointReleveTemperature);
         }
 
@@ -106,8 +106,8 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 return NotFound();
             }
 
-            var pointReleveTemperature = await _context.PointReleveTemperatures.FindAsync(id);
-            ViewBag.TypePoint = new SelectList(_context.TypePoints, "Id", "Nom");
+            var pointReleveTemperature = await _dataTemperature.GetPointReleveTemperatureById((int)id);
+            ViewBag.TypePoint = new SelectList(await _dataPoco.GetTypePoint(), "Id", "Nom");
 
             if (pointReleveTemperature == null)
             {
@@ -119,7 +119,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // POST: Temperatures/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPoint(int id, [Bind("Id,Nom,Localisation,TypePointId,Statut")] PointReleveTemperature pointReleveTemperature)
+        public async Task<IActionResult> EditPoint(int id, [Bind("Id,Nom,Localisation,TypePointId, EtablissementId,Statut")] PointReleveTemperature pointReleveTemperature)
         {
             if (id != pointReleveTemperature.Id)
             {
@@ -130,10 +130,12 @@ namespace CarnetSanitaire.Web.UI.Controllers
             {
                 try
                 {
-                    _context.Update(pointReleveTemperature);
-                    await _context.SaveChangesAsync();
+                    if(! await _dataTemperature.EditPointReleveTemperature(pointReleveTemperature))
+                    {
+                        return NotFound();
+                    }
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
                     if (!_dataTemperature.PointReleveTemperatureExists(pointReleveTemperature.Id))
                     {
@@ -141,16 +143,15 @@ namespace CarnetSanitaire.Web.UI.Controllers
                     }
                     else
                     {
-                        throw;
+                        await _dataTemperature.AddLogErreur(ex);
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("IndexPoints");
             }
-            ViewBag.TypePoint = new SelectList(_context.TypePoints, "Id", "Nom");
+            ViewBag.TypePoint = new SelectList(await _dataPoco.GetTypePoint(), "Id", "Nom");
             return View(pointReleveTemperature);
         }
         #endregion
 
-        
     }
 }
