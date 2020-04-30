@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarnetSanitaire.Web.UI.Data;
 using CarnetSanitaire.Web.UI.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarnetSanitaire.Web.UI.Controllers
 {
+    [Authorize]
     public class InstallationsController : Controller
     {
         #region Global et Constructeur
