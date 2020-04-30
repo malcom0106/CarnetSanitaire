@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<CarnetSanitaire.Web.UI.Models.PointReleveTemperature>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Temperature";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h2>Points de relevé de température</h2>
 
 <table class="table">
     <thead>
@@ -49,5 +49,5 @@
     </tbody>
 </table>
 <div class="row col-12">
-    <a asp-action="CreatePoint" class="btn btn-outline-primary col-12">Nouveau Point</a>
+    <a asp-action="CreatePoint" class="btn btn-outline-success col-12">Nouveau Point</a>
 </div>

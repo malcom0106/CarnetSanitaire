@@ -16,7 +16,7 @@ namespace CarnetSanitaire.Web.UI.Data
 
         public async Task<List<PointReleveTemperature>> GetPointReleveTemperatures()
         {
-            List<PointReleveTemperature> PointReleveTemperatures = null;
+            List<PointReleveTemperature> PointReleveTemperatures;
             try
             {
                 Etablissement etablissement = await GetEtablissementByUser();
@@ -31,7 +31,7 @@ namespace CarnetSanitaire.Web.UI.Data
 
         public async Task<bool> AddPointReleveTemperature(PointReleveTemperature pointReleveTemperature)
         {
-            bool isCreated = false;
+            bool isCreated;
             try
             {
                 Etablissement etablissement = await GetEtablissementByUser();
@@ -42,12 +42,32 @@ namespace CarnetSanitaire.Web.UI.Data
             }
             catch (Exception ex)
             {
+                isCreated = false
                 throw ex;
+
             }
             return isCreated;
         }
 
+        public async Task<bool> EditPointReleveTemperature(PointReleveTemperature pointReleveTemperature)
+        {
+            bool IsEdited = false;
+            try
+            {
+                Etablissement etablissement = await GetEtablissementByUser();
+                if(pointReleveTemperature.Etablissement.Id == etablissement.Id)
+                {
 
+                    await _context.SaveChangesAsync();
+                    IsEdited = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return IsEdited;
+        }
 
         public bool PointReleveTemperatureExists(int id)
         {

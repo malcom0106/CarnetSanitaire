@@ -90,6 +90,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 }
                 return RedirectToAction("IndexPoints");
             }
+            ViewBag.TypePoint = new SelectList(_context.TypePoints, "Id", "Nom");
             return View(pointReleveTemperature);
         }
 
@@ -145,6 +146,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.TypePoint = new SelectList(_context.TypePoints, "Id", "Nom");
             return View(pointReleveTemperature);
         }
         #endregion

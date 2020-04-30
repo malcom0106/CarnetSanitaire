@@ -10,28 +10,35 @@
 <div>
     <h4>PointReleveTemperature</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
+    <dl class="row col-md-8">
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.Nom)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.Nom)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.Localisation)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.Localisation)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.TypePointId)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.TypePoint.Nom)
+        </dd>
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.Statut)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.Statut)
         </dd>
     </dl>
+    <div class="row col-md-8">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary col-12 col-md-6">Modifier</a>
+        <a asp-action="IndexPoints" class="btn btn-outline-danger col-12 col-md-6">Retour</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
