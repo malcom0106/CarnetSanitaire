@@ -7,18 +7,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CarnetSanitaire.Web.UI.Models;
 using Microsoft.AspNetCore.Authorization;
+using CarnetSanitaire.Web.UI.Data;
 
 namespace CarnetSanitaire.Web.UI.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly CarnetSanitaire.Web.UI.Data.DataEtablissement _dataEtablissement;
+        private readonly DataEtablissement _dataEtablissement;
 
-        public HomeController(ILogger<HomeController> logger, CarnetSanitaire.Web.UI.Data.DataEtablissement dataEtablissement)
-        {            
-            _logger = logger;
+        public HomeController(DataEtablissement dataEtablissement)
+        {
             _dataEtablissement = dataEtablissement;
         }
 

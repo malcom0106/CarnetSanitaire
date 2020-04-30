@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarnetSanitaire.Web.UI.Data;
 using CarnetSanitaire.Web.UI.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarnetSanitaire.Web.UI.Controllers
 {
+    [Authorize]
     public class ProductionsController : Controller
     {
+        #region Constructeur et Global
         private readonly ApplicationDbContext _context;
         private readonly DataProduction _dataProduction;
 
@@ -20,13 +23,13 @@ namespace CarnetSanitaire.Web.UI.Controllers
             _context = context;
             _dataProduction = dataProduction;
         }
+        #endregion
 
-
-
+        #region Détail
         // GET: Productions/Details/5
         public async Task<IActionResult> Details()
         {
-            Production production = null;
+            Production production;
             try
             {
                 production = await _dataProduction.GetProduction();
@@ -34,6 +37,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
             catch (Exception ex)
             {
                 await _dataProduction.AddLogErreur(ex);
+                return NotFound();
             }
             if (production == null)
             {
@@ -42,17 +46,27 @@ namespace CarnetSanitaire.Web.UI.Controllers
 
             return View(production);
         }
+        #endregion
 
+        #region Creation
         // GET: Productions/Create
         public async Task<IActionResult> Create()
-        
         {
-            if (await _dataProduction.VerifyProductionInstallation())
+            try
             {
-                return RedirectToAction("Details", "Productions");
+                if (await _dataProduction.VerifyProductionInstallation())
+                {
+                    return RedirectToAction("Details", "Productions");
+                }
+                ViewBag.TypeReseau = new SelectList(_context.TypeReseaus, "Id", "Nom");
+                ViewBag.TypeProduction = new SelectList(_context.TypeProductions, "Id", "Nom");
             }
-            ViewBag.TypeReseau = new SelectList(_context.TypeReseaus, "Id", "Nom");
-            ViewBag.TypeProduction = new SelectList(_context.TypeProductions, "Id", "Nom");
+            catch (Exception ex)
+            {
+                await _dataProduction.AddLogErreur(ex);
+                return NotFound();
+            }
+
             return View();
         }
 
@@ -71,26 +85,36 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 catch (Exception ex)
                 {
                     await _dataProduction.AddLogErreur(ex);
+                    return NotFound();
                 }
 
             }
             return View(modelViewProduction);
         }
 
-        // GET: Productions/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        #endregion
 
-            var production = await _context.Productions.FindAsync(id);
-            if (production == null)
+        #region Edition
+
+        // GET: Productions/Edit/5
+        public async Task<IActionResult> Edit()
+        {
+            ModelViewProduction modelViewProduction = null;
+            try
+            {
+                modelViewProduction = await _dataProduction.GetProductionModelView();
+                ViewBag.TypeReseau = new SelectList(_context.TypeReseaus, "Id", "Nom");
+                ViewBag.TypeProduction = new SelectList(_context.TypeProductions, "Id", "Nom");
+            }
+            catch (Exception ex)
+            {
+                await _dataProduction.AddLogErreur(ex);
+            }
+            if (modelViewProduction == null)
             {
                 return NotFound();
             }
-            return View(production);
+            return View(modelViewProduction);
         }
 
         // POST: Productions/Edit/5
@@ -107,29 +131,30 @@ namespace CarnetSanitaire.Web.UI.Controllers
             {
                 try
                 {
-                    _context.Update(production);
-                    await _context.SaveChangesAsync();
+                    if (!await _dataProduction.EditProduction(production))
+                    {
+                        return NotFound();
+                    }
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
-                    if (!ProductionExists(production.Id))
+                    if (!_dataProduction.ProductionExists(production.Id))
                     {
                         return NotFound();
                     }
                     else
                     {
-                        throw;
+                        await _dataProduction.AddLogErreur(ex);
+                        return NotFound();
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details");
             }
             return View(production);
         }
 
+        #endregion
 
-        private bool ProductionExists(int id)
-        {
-            return _context.Productions.Any(e => e.Id == id);
-        }
+
     }
 }

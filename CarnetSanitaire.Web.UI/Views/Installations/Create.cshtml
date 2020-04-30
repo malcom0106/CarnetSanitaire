@@ -24,7 +24,7 @@
             <div class="form-group">
                 <label asp-for="CalorifugeageEcsId" class="control-label"></label>
                 <select asp-for="CalorifugeageEcsId" class="form-control" asp-items="ViewBag.CalorifugeageEcs"></select>
-            </div>            
+            </div>
             <hr />
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -41,9 +41,9 @@
                     @Html.DisplayNameFor(model => model.DispositifProtectionRetourEau) <input class="form-check-input" asp-for="DispositifProtectionRetourEau" />
                 </label>
             </div>
-            <div class="row col-12 py-2 form-group">
-                <input type="submit" value="Create" class="btn btn-outline-primary col-6" />
-                <a asp-action="Index" asp-controller="Home" class="btn btn-outline-danger col-6">Accueil</a>
+            <div class="row col-12 form-group">
+                <input type="submit" value="Create" class="btn btn-outline-primary col-12 col-md-6" />
+                <a asp-action="Index" asp-controller="Home" class="btn btn-outline-danger col-12 col-md-6">Retour</a>
             </div>
         </form>
     </div>

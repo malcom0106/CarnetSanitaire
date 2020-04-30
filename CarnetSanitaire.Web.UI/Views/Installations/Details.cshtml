@@ -10,25 +10,25 @@
 <div>
     <h4>Installation</h4>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-4">
+    <dl class="row col-md-8">
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.CalorifugeageEf)
         </dt>
-        <dd class="col-sm-8">
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.CalorifugeageEf.Nom)
         </dd>
 
-        <dt class="col-sm-4">
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.CalorifugeageEcs)
         </dt>
-        <dd class="col-sm-8">
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.CalorifugeageEcs.Nom)
         </dd>
 
-        <dt class="col-sm-4">
+        <dt class="col-sm-5">
             Materiaux 
         </dt>
-        <dd class="col-sm-8">
+        <dd class="col-sm-7">
             @if(Model.InstallationMateriaus.Count > 0)
             {
                 foreach(InstallationMateriau installationMateriau in Model.InstallationMateriaus)
@@ -38,47 +38,47 @@
             }
         </dd>
 
-        <dt class="col-sm-4">
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.Diagnostiques)
         </dt>
-        <dd class="col-sm-8">
+        <dd class="col-sm-7">
             @if (Model.Diagnostiques != null && Model.Diagnostiques.Count > 0)
             {
-                <a asp-action="Index" asp-controller="Diagnostiques" asp-route-installationId="@Model.Id" class="btn btn-outline-secondary">Voir les diagnostiques</a>
+                <a asp-action="Index" asp-controller="Diagnostiques" class="btn btn-outline-secondary col-5">Voir les diagnostiques</a>
             }
             else
             {
-                <a asp-action="Create" asp-controller="Diagnostiques" asp-route-installationId="@Model.Id" class="btn btn-outline-secondary">Ajouter un diagnostique</a>
+                <a asp-action="Create" asp-controller="Diagnostiques" class="btn btn-outline-secondary col-5">Ajouter un diagnostique</a>
             }
         </dd>
 
-        <dt class="col-sm-4">
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.Production)
         </dt>
-        <dd class="col-sm-8">
+        <dd class="col-sm-7">
             @if (Model.Production == null)
             {
-                <a asp-action="Create" asp-controller="Productions" class="btn btn-outline-secondary">Ajouter la production</a>
+                <a asp-action="Create" asp-controller="Productions" class="btn btn-outline-secondary col-5">Ajouter la production</a>
             }
             else
             {
-                <a asp-action="Details" asp-controller="Productions" class="btn btn-outline-secondary">Voir la Production</a>
+                <a asp-action="Details" asp-controller="Productions" class="btn btn-outline-secondary col-5">Voir la Production</a>
             }
         </dd>
 
-        <dt class="col-sm-4">
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.Interconnexion_Existance)
         </dt>
-        <dd class="col-sm-8">
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.Interconnexion_Existance)
         </dd>
 
         @if (Model.Interconnexion_Existance)
         {
-            <dt class="col-sm-4">
+            <dt class="col-sm-5">
                 @Html.DisplayNameFor(model => model.InterconnexionType)
             </dt>
-            <dd class="col-sm-8">
+            <dd class="col-sm-7">
                 @Html.DisplayFor(model => model.InterconnexionType)
             </dd>
         }
@@ -86,12 +86,12 @@
         <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.DispositifProtectionRetourEau)
         </dt>
-        <dd class="col-sm-8">
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.DispositifProtectionRetourEau)
         </dd>
     </dl>
 </div>
-<div class="row col-12">
-    <a asp-action="Edit" class="btn btn-outline-info col-6">Modifier</a>
-    <a asp-action="Index" asp-controller="Home" class="btn btn-outline-danger col-6">Retour Accueil</a>
+<div class="row col-md-8">
+    <a asp-action="Edit" class="btn btn-outline-primary col-12 col-md-6">Modifier</a>
+    <a asp-action="Index" asp-controller="Home" class="btn btn-outline-danger col-12 col-md-6">Retour Accueil</a>
 </div>

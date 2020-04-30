@@ -27,29 +27,25 @@
                 <select asp-for="CalorifugeageEcsId" class="form-control" asp-items="ViewBag.CalorifugeageEcs"></select>
             </div>
             <hr />
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    @Html.DisplayNameFor(model => model.Interconnexion_Existance) <input class="form-check-input" asp-for="Interconnexion_Existance" />
-                </label>
+            <div class="form-group">
+                <label class="control-label">@Html.DisplayNameFor(model => model.Interconnexion_Existance)</label>
+                <input class="form-control" asp-for="Interconnexion_Existance" />
             </div>
             <div class="form-group">
                 <label asp-for="InterconnexionType" class="control-label"></label>
                 <input asp-for="InterconnexionType" class="form-control" />
                 <span asp-validation-for="InterconnexionType" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    @Html.DisplayNameFor(model => model.DispositifProtectionRetourEau) <input class="form-check-input" asp-for="DispositifProtectionRetourEau" />
-                </label>
-            </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <label class="control-label">@Html.DisplayNameFor(model => model.DispositifProtectionRetourEau)</label>
+                <input class="form-control" asp-for="DispositifProtectionRetourEau" />
+            </div>
+            <div class="row col-12 form-group">
+                <input type="submit" value="Create" class="btn btn-outline-primary col-12 col-md-6" />
+                <a asp-action="Details" class="btn btn-outline-danger col-12 col-md-6">Retour</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 

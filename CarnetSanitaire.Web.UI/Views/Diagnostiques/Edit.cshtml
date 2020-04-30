@@ -10,7 +10,7 @@
 <h4>Diagnostique</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -30,14 +30,11 @@
                 <input asp-for="Diagnostique_Intervenant" class="form-control" />
                 <span asp-validation-for="Diagnostique_Intervenant" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="row col-12 form-group">
+                <input type="submit" value="Create" class="btn btn-outline-primary col-12 col-md-6" />
+                <a asp-action="Index" class="btn btn-outline-danger col-12 col-md-6">Retour</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 

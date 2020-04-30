@@ -10,14 +10,16 @@ namespace CarnetSanitaire.Web.UI.Data
 {
     public class DataProduction : DataAccess
     {
-        public DataProduction(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor) : base(context, httpContextAccessor)
+        private readonly DataPoco _dataPoco;
+        public DataProduction(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, DataPoco dataPoco) : base(context, httpContextAccessor)
         {
+            _dataPoco = dataPoco;
         }
 
         public async Task<bool> VerifyProductionInstallation()
         {
             bool isVerified = false;
-            Production production = null;
+            Production production;
             try
             {
                 Etablissement etablissement = await GetEtablissementByUser();
@@ -54,6 +56,36 @@ namespace CarnetSanitaire.Web.UI.Data
             return production;
         }
 
+        public async Task<ModelViewProduction> GetProductionModelView()
+        {
+            ModelViewProduction modelViewProduction = null;
+            try
+            {
+                Etablissement etablissement = await GetEtablissementByUser();
+                Production production = await _context.Productions
+                    .Include(p => p.TypeProduction)
+                    .Include(p => p.TypeReseau)
+                    .Where(p => p.InstallationId == etablissement.Installation.Id).FirstOrDefaultAsync();
+
+                modelViewProduction = new ModelViewProduction()
+                {
+                    Id = production.Id,
+                    Identification = production.Identification,
+                    InstallationId = production.InstallationId,
+                    NombreBallon = production.NombreBallon,
+                    TemperatureBouclageEcs = production.TemperatureBouclageEcs,
+                    TemperatureDepartEcs = production.TemperatureDepartEcs,
+                    TypeProductionId = production.TypeProduction.Id,
+                    TypeReseauId = production.TypeReseau.Id
+                };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return modelViewProduction;
+        }
+
         public async Task<Production> AddProduction(ModelViewProduction modelViewProduction)
         {
             Production production = null;
@@ -85,5 +117,49 @@ namespace CarnetSanitaire.Web.UI.Data
             return production;
         }
 
+        public async Task<bool> EditProduction(ModelViewProduction modelViewProduction)
+        {
+            bool IsEdited = false;
+
+            try
+            {
+                Etablissement etablissement = await GetEtablissementByUser();
+                if(etablissement.Installation.Production.Id == modelViewProduction.Id)
+                {
+                    Production production = await _context.Productions
+                        .Include(p => p.TypeProduction)
+                        .Include(p => p.TypeReseau)
+                        .Where(p => p.Id == modelViewProduction.Id)
+                        .FirstOrDefaultAsync();
+
+                    List<TypeProduction> typeProductions = await _dataPoco.GetTypeProduction();
+                    List<TypeReseau> typeReseaus = await _dataPoco.GetTypeReseau();
+
+                    production.Identification = modelViewProduction.Identification;
+                    production.InstallationId = etablissement.Installation.Id;
+                    production.NombreBallon = modelViewProduction.NombreBallon;
+                    production.TemperatureBouclageEcs = modelViewProduction.TemperatureBouclageEcs;
+                    production.TemperatureDepartEcs = modelViewProduction.TemperatureDepartEcs;
+                    
+                    production.TypeProduction = typeProductions.Where(p => p.Id == modelViewProduction.TypeProductionId).FirstOrDefault();                    
+                    production.TypeReseau = typeReseaus.Where(p => p.Id == modelViewProduction.TypeReseauId).FirstOrDefault();
+
+                    _context.Update(production);
+                    await _context.SaveChangesAsync();
+                    IsEdited = true;
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+
+            return IsEdited;
+        }
+
+        public bool ProductionExists(int id)
+        {
+            return _context.Productions.Any(e => e.Id == id);
+        }
     }
 }
