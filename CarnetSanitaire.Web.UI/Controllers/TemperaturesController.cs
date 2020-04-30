@@ -48,7 +48,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         #region DetailPoint
 
         // GET: Temperatures/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> DetailsPoint(int? id)
         {
             if (id == null)
             {
@@ -95,7 +95,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         #region EditPoint
 
         // GET: Temperatures/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> EditPoint(int? id)
         {
             if (id == null)
             {
@@ -113,7 +113,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // POST: Temperatures/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nom,Localisation,TypePointId,Statut")] PointReleveTemperature pointReleveTemperature)
+        public async Task<IActionResult> EditPoint(int id, [Bind("Id,Nom,Localisation,TypePointId,Statut")] PointReleveTemperature pointReleveTemperature)
         {
             if (id != pointReleveTemperature.Id)
             {
