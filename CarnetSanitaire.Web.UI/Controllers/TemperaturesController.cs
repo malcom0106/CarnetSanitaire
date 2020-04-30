@@ -7,26 +7,35 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CarnetSanitaire.Web.UI.Data;
 using CarnetSanitaire.Web.UI.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarnetSanitaire.Web.UI.Controllers
 {
+    [Authorize]
     public class TemperaturesController : Controller
     {
         #region Constructeur + Global
 
         private readonly ApplicationDbContext _context;
+        private readonly DataTemperature _dataTemperature;
 
-        public TemperaturesController(ApplicationDbContext context)
+        public TemperaturesController(ApplicationDbContext context, DataTemperature dataTemperature)
         {
             _context = context;
+            _dataTemperature = dataTemperature;
         }
         #endregion
 
+        #region IndexPoint
         // GET: Temperatures
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> IndexPoints()
         {
-            return View(await _context.PointReleveTemperatures.ToListAsync());
+            return View(await _dataTemperature.GetPointReleveTemperatures()) ;
         }
+
+        #endregion
+
+        #region DetailPoint
 
         // GET: Temperatures/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -46,18 +55,21 @@ namespace CarnetSanitaire.Web.UI.Controllers
             return View(pointReleveTemperature);
         }
 
+        #endregion
+
+        #region CreatePoint
+
         // GET: Temperatures/Create
-        public IActionResult Create()
+        public IActionResult CreatePoint()
         {
             return View();
         }
 
+
         // POST: Temperatures/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nom,Localisation,Statut")] PointReleveTemperature pointReleveTemperature)
+        public async Task<IActionResult> CreatePoint([Bind("Id,Nom,Localisation,TypePointId,Statut")] PointReleveTemperature pointReleveTemperature)
         {
             if (ModelState.IsValid)
             {
@@ -67,6 +79,10 @@ namespace CarnetSanitaire.Web.UI.Controllers
             }
             return View(pointReleveTemperature);
         }
+
+        #endregion
+
+        #region EditPoint
 
         // GET: Temperatures/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -85,11 +101,9 @@ namespace CarnetSanitaire.Web.UI.Controllers
         }
 
         // POST: Temperatures/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nom,Localisation,Statut")] PointReleveTemperature pointReleveTemperature)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nom,Localisation,TypePointId,Statut")] PointReleveTemperature pointReleveTemperature)
         {
             if (id != pointReleveTemperature.Id)
             {
@@ -105,7 +119,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PointReleveTemperatureExists(pointReleveTemperature.Id))
+                    if (!_dataTemperature.PointReleveTemperatureExists(pointReleveTemperature.Id))
                     {
                         return NotFound();
                     }
@@ -118,39 +132,8 @@ namespace CarnetSanitaire.Web.UI.Controllers
             }
             return View(pointReleveTemperature);
         }
+        #endregion
 
-        // GET: Temperatures/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var pointReleveTemperature = await _context.PointReleveTemperatures
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (pointReleveTemperature == null)
-            {
-                return NotFound();
-            }
-
-            return View(pointReleveTemperature);
-        }
-
-        // POST: Temperatures/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var pointReleveTemperature = await _context.PointReleveTemperatures.FindAsync(id);
-            _context.PointReleveTemperatures.Remove(pointReleveTemperature);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool PointReleveTemperatureExists(int id)
-        {
-            return _context.PointReleveTemperatures.Any(e => e.Id == id);
-        }
+        
     }
 }
