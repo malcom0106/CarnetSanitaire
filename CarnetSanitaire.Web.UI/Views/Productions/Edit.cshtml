@@ -10,7 +10,7 @@
 <h4>Production</h4>
 <hr />
 <div class="row">
-    <div class="col-8">
+    <div class="col-md-8">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -45,8 +45,8 @@
                 <span asp-validation-for="TypeProductionId" class="text-danger"></span>
             </div>
             <div class="row form-group col-12">
-                <input type="submit" value="Modifier" class="btn btn-outline-primary col-6" />
-                <a asp-action="Details"  class="btn btn-outline-danger col-6" >Retour</a>
+                <input type="submit" value="Modifier" class="btn btn-outline-primary col-12 col-md-6" />
+                <a asp-action="Details"  class="btn btn-outline-danger col-12 col-md-6" >Retour</a>
             </div>
         </form>
     </div>
