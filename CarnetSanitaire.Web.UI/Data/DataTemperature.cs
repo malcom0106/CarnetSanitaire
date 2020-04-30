@@ -22,11 +22,29 @@ namespace CarnetSanitaire.Web.UI.Data
                 Etablissement etablissement = await GetEtablissementByUser();
                 PointReleveTemperatures = etablissement.PointReleveTemperatures.ToList();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
             return PointReleveTemperatures;
+        }
+
+        public async Task<bool> AddPointReleveTemperature(PointReleveTemperature pointReleveTemperature)
+        {
+            bool isCreated = false;
+            try
+            {
+                Etablissement etablissement = await GetEtablissementByUser();
+                pointReleveTemperature.Etablissement = etablissement;
+                _context.Add(pointReleveTemperature);
+                await _context.SaveChangesAsync();
+                isCreated = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return isCreated;
         }
 
 

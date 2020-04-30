@@ -84,9 +84,11 @@ namespace CarnetSanitaire.Web.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pointReleveTemperature);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (! await _dataTemperature.AddPointReleveTemperature(pointReleveTemperature))
+                {
+                    return NotFound();
+                }
+                return RedirectToAction("IndexPoints");
             }
             return View(pointReleveTemperature);
         }
@@ -104,6 +106,8 @@ namespace CarnetSanitaire.Web.UI.Controllers
             }
 
             var pointReleveTemperature = await _context.PointReleveTemperatures.FindAsync(id);
+            ViewBag.TypePoint = new SelectList(_context.TypePoints, "Id", "Nom");
+
             if (pointReleveTemperature == null)
             {
                 return NotFound();
