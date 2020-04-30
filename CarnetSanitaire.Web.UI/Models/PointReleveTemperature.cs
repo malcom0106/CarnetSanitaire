@@ -11,6 +11,8 @@ namespace CarnetSanitaire.Web.UI.Models
         public string Nom { get; set; }
         public string Localisation { get; set; }
         public TypePoint TypePoint { get; set; }
+        public List<ReleveTemperature> ReleveTemperatures { get; set; }
         public bool Statut { get; set; }
+        public Etablissement Etablissement { get; set; }
     }
 }
