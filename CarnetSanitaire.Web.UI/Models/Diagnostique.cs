@@ -14,10 +14,12 @@ namespace CarnetSanitaire.Web.UI.Models
         [Display(Name = "Diagnostique Réalisé")]
         public bool Diagnostique_Realise { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Date du Diagnostique")]
         public DateTime? Diagnostique_Date { get; set; }
 
+        [Required]
         [Display(Name = "Intervenant")]
         public int? Diagnostique_Intervenant { get; set; }
 
