@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-8">
-        <form asp-action="Create">
+        <form asp-action="CreatePoint">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Nom" class="control-label"></label>
@@ -25,8 +25,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="TypePoint" class="control-label"></label>
-                <select asp-for="TypePoint" asp-items="ViewBag.TypePoint" class="form-control" ></select>
-                <span asp-validation-for="TypePoint" class="text-danger"></span>
+                <select name="TypePointId" asp-items="ViewBag.TypePoint" class="form-control" ></select>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
