@@ -30,7 +30,17 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // GET: Temperatures
         public async Task<IActionResult> IndexPoints()
         {
-            return View(await _dataTemperature.GetPointReleveTemperatures()) ;
+            List<PointReleveTemperature> pointReleveTemperatures;
+            try
+            {
+                pointReleveTemperatures = await _dataTemperature.GetPointReleveTemperatures();
+            }
+            catch(Exception ex)
+            {
+                await _dataTemperature.AddLogErreur(ex);
+                return NotFound();
+            }
+            return View(pointReleveTemperatures);
         }
 
         #endregion
