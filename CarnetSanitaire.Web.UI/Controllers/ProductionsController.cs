@@ -29,7 +29,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // GET: Productions/Details/5
         public async Task<IActionResult> Details()
         {
-            Production production = null;
+            Production production;
             try
             {
                 production = await _dataProduction.GetProduction();
@@ -50,7 +50,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
 
         #region Creation
         // GET: Productions/Create
-        public async Task<IActionResult> Create()        
+        public async Task<IActionResult> Create()
         {
             try
             {
@@ -61,12 +61,12 @@ namespace CarnetSanitaire.Web.UI.Controllers
                 ViewBag.TypeReseau = new SelectList(_context.TypeReseaus, "Id", "Nom");
                 ViewBag.TypeProduction = new SelectList(_context.TypeProductions, "Id", "Nom");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await _dataProduction.AddLogErreur(ex);
                 return NotFound();
             }
-            
+
             return View();
         }
 
@@ -102,9 +102,11 @@ namespace CarnetSanitaire.Web.UI.Controllers
             ModelViewProduction modelViewProduction = null;
             try
             {
-                await _dataProduction.GetProductionModelView();
+                modelViewProduction = await _dataProduction.GetProductionModelView();
+                ViewBag.TypeReseau = new SelectList(_context.TypeReseaus, "Id", "Nom");
+                ViewBag.TypeProduction = new SelectList(_context.TypeProductions, "Id", "Nom");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await _dataProduction.AddLogErreur(ex);
             }
@@ -129,30 +131,30 @@ namespace CarnetSanitaire.Web.UI.Controllers
             {
                 try
                 {
-                    _context.Update(production);
-                    await _context.SaveChangesAsync();
+                    if (!await _dataProduction.EditProduction(production))
+                    {
+                        return NotFound();
+                    }
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
-                    if (!ProductionExists(production.Id))
+                    if (!_dataProduction.ProductionExists(production.Id))
                     {
                         return NotFound();
                     }
                     else
                     {
-                        throw;
+                        await _dataProduction.AddLogErreur(ex);
+                        return NotFound();
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details");
             }
             return View(production);
         }
 
         #endregion
 
-        private bool ProductionExists(int id)
-        {
-            return _context.Productions.Any(e => e.Id == id);
-        }
+
     }
 }
