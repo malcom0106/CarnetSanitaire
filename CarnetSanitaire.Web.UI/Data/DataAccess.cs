@@ -37,7 +37,7 @@ namespace CarnetSanitaire.Web.UI.Data
                 etablissement = await _context.Etablissements
                     .Include(e => e.Societes)
                     .Include(e => e.Coordonnee)
-                    .Include(e => e.ReleveTemperatures)
+                    .Include(e => e.PointReleveTemperatures)
                     .Include(e => e.CampagneAnalyses)
                     .Include(e => e.Installation).ThenInclude(i => i.Production)
                     .Include(e => e.Interventions)
