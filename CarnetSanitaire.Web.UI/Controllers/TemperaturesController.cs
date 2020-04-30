@@ -72,6 +72,7 @@ namespace CarnetSanitaire.Web.UI.Controllers
         // GET: Temperatures/Create
         public IActionResult CreatePoint()
         {
+            ViewBag.TypePoint = new SelectList(_context.TypePoints, "Id", "Nom");
             return View();
         }
 
