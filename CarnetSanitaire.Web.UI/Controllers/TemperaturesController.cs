@@ -153,5 +153,18 @@ namespace CarnetSanitaire.Web.UI.Controllers
         }
         #endregion
 
+        public async Task<IActionResult> CreateReleve(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var pointReleveTemperature = await _dataTemperature.GetPointReleveTemperatureById((int)id);
+            if(pointReleveTemperature == null)
+            {
+                return NotFound();
+            }
+            return View();
+        }
     }
 }
