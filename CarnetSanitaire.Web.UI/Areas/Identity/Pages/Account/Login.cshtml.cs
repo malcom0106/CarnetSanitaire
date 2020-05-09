@@ -87,40 +87,67 @@ namespace CarnetSanitaire.Web.UI.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                YubicoClient yubicoClient = new YubicoClient("", "");
-                IYubicoResponse yubicoResponse = await yubicoClient.VerifyAsync(Input.otp);
-                if (yubicoResponse != null && yubicoResponse.Status == YubicoResponseStatus.Ok)
+
+                #region Yubico
+
+                //YubicoClient yubicoClient = new YubicoClient("", "");
+                //IYubicoResponse yubicoResponse = await yubicoClient.VerifyAsync("");
+                //if (yubicoResponse != null && yubicoResponse.Status == YubicoResponseStatus.Ok)
+                //{
+                //    var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                //    if (result.Succeeded)
+                //    {
+                //        _logger.LogInformation("User logged in.");                        
+                //        return LocalRedirect(returnUrl);
+                //    }
+                //    if (result.RequiresTwoFactor)
+                //    {
+                //        return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                //    }
+                //    if (result.IsLockedOut)
+                //    {
+                //        _logger.LogWarning("User account locked out.");
+                //        return RedirectToPage("./Lockout");
+                //    }
+                //    else
+                //    {
+                //        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                //        return Page();
+                //    }
+                //}
+                //else
+                //{
+                //    _logger.LogWarning("Yubikey non valide.");
+                //    return Page();
+                //}
+
+                #endregion
+
+                #region SansYubico
+
+                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
                 {
-                    // This doesn't count login failures towards account lockout
-                    // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                    var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                    if (result.Succeeded)
-                    {
-                        _logger.LogInformation("User logged in.");
-                        return LocalRedirect(returnUrl);
-                    }
-                    if (result.RequiresTwoFactor)
-                    {
-                        return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                    }
-                    if (result.IsLockedOut)
-                    {
-                        _logger.LogWarning("User account locked out.");
-                        return RedirectToPage("./Lockout");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                        return Page();
-                    }
+                    _logger.LogInformation("User logged in.");
+                    return LocalRedirect(returnUrl);
+                }
+                if (result.RequiresTwoFactor)
+                {
+                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                }
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning("User account locked out.");
+                    return RedirectToPage("./Lockout");
                 }
                 else
                 {
-                    _logger.LogWarning("Yubikey non valide.");
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }
 
-                
+                #endregion
+
             }
 
             // If we got this far, something failed, redisplay form
